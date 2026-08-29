@@ -1,0 +1,36 @@
+DEPLOY THIS VERSION
+
+This folder is already converted to a normal Next.js static website for GitHub Pages.
+You do NOT need to edit package.json, next.config.ts, or the workflow yourself.
+
+GitHub repository: you can KEEP the current repository name "Website".
+
+1. In your GitHub repository, delete the old deployment workflow file under:
+   .github/workflows/
+   (the workflow that created "Deploy Next.js site to Pages").
+
+2. Replace the repository contents with the contents of THIS folder.
+   Important: upload the CONTENTS of this folder, not the outer folder itself.
+
+3. In GitHub open:
+   Settings -> Pages
+
+4. Under "Build and deployment", set:
+   Source -> GitHub Actions
+
+5. Open:
+   Actions -> Deploy portfolio to GitHub Pages
+   and run the workflow, or simply commit/push the files to main.
+
+Expected address if the repository stays named Website:
+   https://lvmbrxu.github.io/Website/
+
+The configuration automatically handles the /Website path, including images,
+the resume PDF, project links, and favicon.
+
+For editing later:
+- app/page.tsx = homepage text
+- lib/projects.ts = projects
+- app/globals.css = styling
+- public/images/ = images
+- public/files/vladut-andrei-lambru-resume.pdf = resume
