@@ -5,8 +5,8 @@ import { projects } from "@/lib/projects";
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 const education = [
-  { period: "Aug 2026 — Jan 2027", title: "Computer Science exchange", place: "SeoulTech", location: "Seoul, South Korea", note: "A semester abroad focused on computer science and working in a new academic culture." },
-  { period: "2024 — 2028", title: "Creative Media & Game Technologies", place: "Hanze University of Applied Sciences", location: "Groningen, Netherlands", note: "Project-based game development, mainly using Unity and C# for gameplay, VR and interaction systems." },
+  { period: "Aug 2026 — Jan 2027", title: "Computer Science exchange", place: "SeoulTech", location: "Seoul, South Korea", note: "A semester abroad focused on computer science and working in a new academic culture.", logo: "/images/education/seoultech.png", logoAlt: "SeoulTech" },
+  { period: "2024 — 2028", title: "Creative Media & Game Technologies", place: "Hanze University of Applied Sciences", location: "Groningen, Netherlands", note: "Project-based game development, mainly using Unity and C# for gameplay, VR and interaction systems.", logo: "/images/education/hanze.svg", logoAlt: "Hanze University of Applied Sciences" },
   { period: "2020 — 2024", title: "Mathematics & Computer Science", place: "Grigore Moisil National College", location: "Urziceni, Romania", note: "Where I built my foundation in programming, mathematics, logic and physics." },
 ];
 
@@ -87,7 +87,7 @@ export default function Home() {
 
     <section className="background-section" id="background">
       <div className="section-heading enter"><p className="label">Background</p><h2>Education and experience.</h2></div>
-      <div className="timeline">{education.map((item) => <article className="enter" key={item.period + item.title}><p className="timeline-period">{item.period}</p><div><h3>{item.title}</h3><p className="timeline-place">{item.place} · {item.location}</p><p>{item.note}</p></div></article>)}</div>
+      <div className="timeline">{education.map((item) => <article className="enter" key={item.period + item.title}><p className="timeline-period">{item.period}</p><div className="timeline-content"><div><h3>{item.title}</h3><p className="timeline-place">{item.place} · {item.location}</p><p>{item.note}</p></div>{item.logo && <div className="education-logo"><Image unoptimized src={`${basePath}${item.logo}`} alt={item.logoAlt} width={220} height={110} /></div>}</div></article>)}</div>
       <div className="background-lower">
         <div className="enter"><h3 className="subheading">Certificates & training</h3><div className="credential-list">{credentials.map(([year, title, issuer]) => <div key={title}><span>{year}</span><p><strong>{title}</strong><small>{issuer}</small></p></div>)}</div></div>
         <div className="enter delay-one"><h3 className="subheading">Work outside university</h3><div className="plain-card"><h3>Sales employee · Albert Heijn</h3><p className="muted">Part-time, 2024 — present · Groningen</p><p>Working alongside my studies, helping customers, restocking shelves and unloading deliveries.</p></div><div className="plain-card"><h3>Festival volunteer</h3><p className="muted">Neversea 2023 · Beach, Please! 2024</p><p>Managed access for artists, VIPs and staff during busy shifts and handled access problems as they came up.</p></div></div>

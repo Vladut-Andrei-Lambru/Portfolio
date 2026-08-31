@@ -16,6 +16,16 @@ test("homepage uses the professional contact and current identity", async () => 
   assert.doesNotMatch(page, /className="header-contact" href="mailto:/);
 });
 
+test("education shows the official Hanze and SeoulTech marks", async () => {
+  const page = await read("app/page.tsx");
+  assert.match(page, /images\/education\/hanze\.svg/);
+  assert.match(page, /images\/education\/seoultech\.png/);
+  assert.match(page, /className="education-logo"/);
+  assert.match(page, /logoAlt: "Hanze University of Applied Sciences"/);
+  assert.match(page, /logoAlt: "SeoulTech"/);
+  assert.match(page, /alt=\{item\.logoAlt\}/);
+});
+
 test("visual system is dark, restrained and motion-aware", async () => {
   const css = await read("app/globals.css");
   assert.match(css, /--background:\s*#0d1017/i);
@@ -60,6 +70,10 @@ test("project pages support video without fake UI", async () => {
 
 test("project case studies describe the verified work and ownership clearly", async () => {
   const projects = await read("lib/projects.ts");
+  const projectPage = await read("app/projects/[slug]/page.tsx");
+
+  assert.match(projects, /development:/);
+  assert.match(projectPage, /How it developed/);
 
   assert.match(projects, /DylanoSpks\/Tiny-Spider-Tiny-Home/);
   assert.match(projects, /surface normal/);
@@ -71,7 +85,7 @@ test("project case studies describe the verified work and ownership clearly", as
   assert.match(projects, /compression depth, rhythm, and active CPR time/);
   assert.match(projects, /pillow/);
 
-  assert.match(projects, /thirty years into the future/);
+  assert.match(projects, /thirty years in(?:to)? the future/);
   assert.match(projects, /bridge's weight limit/);
   assert.match(projects, /I did not create the art assets/);
 });
