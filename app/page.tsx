@@ -28,8 +28,8 @@ export default function Home() {
     <section className="hero" id="top">
       <div className="hero-copy enter">
         <p className="availability"><span /> Seeking a full-time internship from February 2027</p>
-        <h1>Gameplay programming, technical design and VR interaction.</h1>
-        <p className="hero-intro">I’m Vlad, a 21-year-old CMGT student. I work mainly in Unity and C#, building movement, interaction and feedback systems that get better through playtesting.</p>
+        <h1>Technical Game Designer & Gameplay Programmer<span>Unity, C# and VR development</span></h1>
+        <p className="hero-intro">I’m a CMGT student at Hanze University, currently studying at SeoulTech. I build gameplay and interaction systems in Unity, with a focus on VR, player feedback and technical prototyping.</p>
         <div className="hero-actions">
           <a className="button primary" href="#work">View selected work</a>
           <a className="button" href={`${basePath}/files/vladut-andrei-lambru-resume.pdf`} target="_blank" rel="noreferrer">Résumé ↗</a>
@@ -47,7 +47,7 @@ export default function Home() {
     </section>
 
     <section className="project-section" id="work">
-      <div className="section-heading enter"><p className="label">Selected work</p><h2>Projects I can actually talk through.</h2><p>What I built, what broke, and how the systems changed along the way.</p></div>
+      <div className="section-heading enter"><p className="label">Selected projects</p><h2>Gameplay and interaction systems.</h2><p>Three team projects showing my work in Unity, C# and VR.</p></div>
       <div className="project-list">
         {projects.map((project) => <article className="project-card enter" key={project.slug}>
           <Link className="project-image" href={`/projects/${project.slug}`} aria-label={`Read the ${project.title} case study`}>
@@ -65,10 +65,10 @@ export default function Home() {
     </section>
 
     <section className="about-section" id="about">
-      <div className="section-heading enter"><p className="label">About</p><h2>I’m interested in the part of a game the player feels before they can explain it.</h2></div>
+      <div className="section-heading enter"><p className="label">About</p><h2>Technical design backed by implementation.</h2></div>
       <div className="about-grid">
-        <div className="about-copy enter"><p>I started with graphics and interfaces, then moved toward programming because I wanted more control over how things behave. Most of my recent work has involved movement, physics, cameras, interaction and feedback.</p><p>I’m not trying to present myself as a finished developer. I can build a working first version, test it with people, find the awkward parts and improve it with the team. That is the kind of work I want to keep doing during my internship.</p></div>
-        <div className="toolbox enter delay-one"><h3>Working set</h3><dl>
+        <div className="about-copy enter"><p>My work sits between design and programming. I prototype mechanics, implement them in Unity, test them with players and iterate with designers and artists. Recent projects have focused on VR interaction, movement, physics, cameras and feedback systems.</p></div>
+        <div className="toolbox enter delay-one"><h3>Role and tools</h3><dl>
           <div><dt>Main tools</dt><dd>Unity · C# · Git</dd></div>
           <div><dt>Used in projects</dt><dd>VR/XR · Meta Quest 3 · Unreal Engine · Blueprints</dd></div>
           <div><dt>I enjoy</dt><dd>Gameplay prototyping · Debugging · Playtesting · Interaction design</dd></div>
@@ -78,7 +78,7 @@ export default function Home() {
     </section>
 
     <section className="background-section" id="background">
-      <div className="section-heading enter"><p className="label">Background</p><h2>Study, work and the useful things around them.</h2></div>
+      <div className="section-heading enter"><p className="label">Background</p><h2>Education and experience.</h2></div>
       <div className="timeline">{education.map((item) => <article className="enter" key={item.period + item.title}><p className="timeline-period">{item.period}</p><div><h3>{item.title}</h3><p className="timeline-place">{item.place} · {item.location}</p><p>{item.note}</p></div></article>)}</div>
       <div className="background-lower">
         <div className="enter"><h3 className="subheading">Certificates & training</h3><div className="credential-list">{credentials.map(([year, title, issuer]) => <div key={title}><span>{year}</span><p><strong>{title}</strong><small>{issuer}</small></p></div>)}</div></div>
