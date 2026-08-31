@@ -1,119 +1,82 @@
 import Image from "next/image";
 import Link from "next/link";
 import { projects } from "@/lib/projects";
-import { publicPath } from "@/lib/paths";
-import { getDisplayLinks, getPresentation } from "@/lib/project-presentation";
+
+const basePath=process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 const education = [
-  { period: "2024 – 2028", title: "BSc Creative Media & Game Technologies", institution: "Hanze University of Applied Sciences", description: "Project-based game development with a focus on Unity, C#, VR and multidisciplinary production." },
-  { period: "2026", title: "Computer Science exchange semester", institution: "Seoul National University of Science and Technology", description: "Coursework in computer science alongside my main game-development degree." },
+  { period: "Aug 2026 — Jan 2027", title: "Exchange semester, Computer Science", place: "Seoul National University of Science and Technology", location: "Seoul, South Korea", note: "A semester abroad focused on computer science, new ways of working, and learning inside a different academic culture." },
+  { period: "2024 — 2028", title: "Creative Media & Game Technologies", place: "Hanze University of Applied Sciences", location: "Groningen, Netherlands", note: "Project-based game development with most of my time spent in Unity, C#, VR, gameplay systems, debugging, and team production." },
+  { period: "2020 — 2024", title: "Mathematics & Computer Science", place: "Grigore Moisil National College", location: "Urziceni, Romania", note: "Built my foundation in programming, mathematics, logic, and physics before moving into game development." },
 ];
 
-const capabilities = [
-  ["Primary tools", "Unity · C# · Git"],
-  ["Gameplay", "Prototyping · Movement · Cameras · Interaction · Feedback"],
-  ["VR / XR", "Meta Quest 3 · XR Interaction Toolkit · Hand tracking · Physics"],
-  ["Additional", "Unreal Engine · Blueprints · UI/UX · Playtesting"],
+const credentials = [
+  ["2025", "Propedeutic Diploma", "Hanze University of Applied Sciences"],
+  ["2024", "Cambridge English Qualification · B2, score 173", "Cambridge Assessment English"],
+  ["2024", "Diploma de Bacalaureat", "Ministry of Education, Romania"],
+  ["2023", "Database Design", "Oracle Academy"],
 ];
 
 export default function Home() {
-  const featured = projects[0];
-  const featuredView = getPresentation(featured);
+  return <main>
+    <header className="site-header">
+      <Link className="wordmark" href="#top" aria-label="Back to the top">Vlad Lambru<span>.</span></Link>
+      <nav aria-label="Main navigation"><a href="#work">Work</a><a href="#about">About</a><a href="#background">Background</a></nav>
+      <a className="header-link" href={`${basePath}/files/vladut-andrei-lambru-resume.pdf`} target="_blank" rel="noreferrer">Résumé ↗</a>
+    </header>
 
-  return (
-    <main id="top">
-      <header className="site-header">
-        <Link className="wordmark" href="#top" aria-label="Back to the top">Vladut-Andrei Lambru</Link>
-        <nav aria-label="Main navigation"><a href="#work">Projects</a><a href="#profile">Profile</a><a href="#background">Background</a></nav>
-        <a className="header-cta" href={publicPath("/files/vladut-andrei-lambru-resume.pdf")} target="_blank" rel="noreferrer">Résumé <span aria-hidden="true">↗</span></a>
-      </header>
+    <section className="hero" id="top">
+      <div className="hero-copy">
+        <p className="eyebrow"><span className="status-dot" /> Seeking a full-time internship from February 2027</p>
+        <h1>Gameplay programmer with a soft spot for unusual controls.</h1>
+        <p className="hero-intro">I’m Vlad, a 21-year-old CMGT student. I use Unity and C# to build movement, interaction and VR systems, usually through a lot of testing and a few questionable first attempts.</p>
+        <div className="hero-actions">
+          <a className="button primary" href="#work">See my work ↓</a>
+          <a className="button text" href="https://github.com/Vladut-Andrei-Lambru" target="_blank" rel="noreferrer">GitHub ↗</a>
+          <a className="button text" href="https://www.linkedin.com/in/vladut-andrei-lambru/" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+        </div>
+      </div>
+      <div className="hero-portrait">
+        <div className="portrait-frame"><Image unoptimized src={`${basePath}/images/vlad.jpg`} alt="Vlad Lambru" fill priority sizes="(max-width: 760px) 70vw, 32vw" /></div>
+        <p><span>Currently</span> Exchange semester in Seoul</p>
+      </div>
+    </section>
 
-      <section className="hero">
-        <div className="hero-copy">
-          <p className="identity">Vladut-Andrei Lambru</p>
-          <h1>Technical Game Designer<span>&amp; Gameplay Programmer</span></h1>
-          <p className="hero-summary">Unity and C# portfolio focused on gameplay prototyping, player interaction, movement and VR systems. The case studies show what I worked on, how the systems work and what changed after testing.</p>
-          <div className="hero-actions">
-            <a className="button button-primary" href="#work">View selected work</a>
-            <a className="button button-ghost" href="https://github.com/Vladut-Andrei-Lambru" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
-            <a className="button button-ghost" href="https://www.linkedin.com/in/vladut-andrei-lambru/" target="_blank" rel="noreferrer">LinkedIn <span aria-hidden="true">↗</span></a>
+    <section className="project-section" id="work">
+      <div className="section-heading"><p className="section-number">01</p><div><p className="eyebrow">Selected work</p><h2>Things I’ve built and what I learned from them.</h2></div></div>
+      <div className="project-list">
+        {projects.map((project, index) => <article className="project-card" key={project.slug}>
+          <Link className="project-image" href={`/projects/${project.slug}`} aria-label={`Read the ${project.title} case study`}>
+            <Image unoptimized src={`${basePath}${project.hero}`} alt={`${project.title} project screenshot`} fill sizes="(max-width: 760px) 100vw, 58vw" /><span className="project-index">0{index + 1}</span>
+          </Link>
+          <div className="project-card-copy">
+            <p className="eyebrow">{project.year} · {project.engine}</p><h3><Link href={`/projects/${project.slug}`}>{project.title}</Link></h3><p>{project.summary}</p>
+            <ul className="tag-list" aria-label="Project skills">{project.tags.map((tag) => <li key={tag}>{tag}</li>)}</ul>
+            <Link className="case-link" href={`/projects/${project.slug}`}>Read case study <span>↗</span></Link>
           </div>
-          <div className="availability-line"><span aria-hidden="true" />Seeking a full-time internship from February 2027</div>
-        </div>
-        <Link className="hero-project" href={`/projects/${featured.slug}/`} aria-label={`Read the ${featured.title} case study`}>
-          <Image unoptimized src={publicPath(featured.hero)} alt={featuredView.alt} fill priority sizes="(max-width: 900px) 100vw, 46vw" />
-          <div className="hero-project-shade" />
-          <div className="hero-project-label"><p>Featured project · {featuredView.category}</p><h2>{featured.title}</h2><span>{featuredView.highlight}</span></div>
-        </Link>
-      </section>
+        </article>)}
+      </div>
+    </section>
 
-      <section className="work-section" id="work">
-        <div className="section-heading">
-          <div><p className="section-label">Selected work</p><h2>Selected Unity and VR projects.</h2></div>
-          <p>Each case study covers the brief, my role, the implementation and the result. Repository and build links are included when they are available.</p>
-        </div>
-        <div className="project-list">
-          {projects.map((project) => {
-            const view = getPresentation(project);
-            const links = getDisplayLinks(project);
-            return (
-              <article className={`project-card ${view.theme}`} key={project.slug}>
-                <Link className="project-card-media" href={`/projects/${project.slug}/`} aria-label={`Read the ${project.title} case study`}>
-                  <Image unoptimized src={publicPath(project.hero)} alt={view.alt} fill sizes="(max-width: 760px) 100vw, 48vw" />
-                </Link>
-                <div className="project-card-content">
-                  <div className="project-card-topline"><span>{view.category}</span><span>{project.year}</span></div>
-                  <h3><Link href={`/projects/${project.slug}/`}>{project.title}</Link></h3>
-                  <p className="project-card-summary">{project.slug === "virtual-life-support" ? "A hand-tracked CPR training scenario with physical chest compressions, live performance feedback and controlled scenario progression." : project.slug === "tiny-spider-tiny-home" ? "A traversal game in which a spider crosses floors, walls and furniture to switch off appliances around a student room." : "A VR construction game where players assemble a cart by hand, attach the wheels and test whether the structure survives."}</p>
-                  <dl className="project-card-facts">
-                    <div><dt>Role</dt><dd>{view.roleSummary}</dd></div>
-                    <div><dt>Stack</dt><dd>{view.stack}</dd></div>
-                    <div><dt>Scope</dt><dd>{project.duration} · {project.team === "5 people" ? "5-person team" : project.team}</dd></div>
-                  </dl>
-                  <p className="project-highlight">{view.highlight}</p>
-                  <div className="project-actions">
-                    <Link className="text-link" href={`/projects/${project.slug}/`}>Read case study <span aria-hidden="true">↗</span></Link>
-                    {links.map((link) => <a className="quiet-link" key={link.href} href={link.href} target="_blank" rel="noreferrer">{link.label} <span aria-hidden="true">↗</span></a>)}
-                  </div>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      </section>
+    <section className="about-section" id="about">
+      <div className="section-heading inverse"><p className="section-number">02</p><div><p className="eyebrow">About</p><h2>I care about the point where code becomes something a player can feel.</h2></div></div>
+      <div className="about-grid">
+        <div className="about-copy"><p>I started out making graphics and interfaces, then moved toward programming because I wanted to control how things behave, not only how they look. These days, most of my work sits around movement, interaction, physics, camera systems, and feedback.</p><p>I don’t pretend to know everything. I’m at my best when I can build a first version, give it to someone, watch what goes wrong, and improve it with the team.</p></div>
+        <div className="toolbox"><p className="eyebrow">What I work with</p><dl>
+          <div><dt>Every week</dt><dd>Unity · C# · Git</dd></div><div><dt>Project experience</dt><dd>VR/XR · Meta Quest 3 · Unreal Engine · Blueprints</dd></div><div><dt>Comfortable doing</dt><dd>Gameplay prototyping · Debugging · UI feedback · Playtesting</dd></div><div><dt>Learning next</dt><dd>Stronger architecture · Tools programming · C++</dd></div>
+        </dl></div>
+      </div>
+    </section>
 
-      <section className="profile-section" id="profile">
-        <div className="profile-intro">
-          <p className="section-label">Profile</p><h2>Technical design backed by implementation.</h2>
-          <p>I’m a 21-year-old Creative Media and Game Technologies student from Romania. I usually work between design and programming: agreeing on how a mechanic should behave, getting a playable version running and fixing what playtests expose.</p>
-          <p>I’m most interested in movement, cameras, interactions, VR physics and player feedback. I’m looking for a team where I can contribute to a real production and learn from experienced designers and programmers.</p>
-        </div>
-        <div className="capability-table" aria-label="Technical capabilities">{capabilities.map(([label, value]) => <div key={label}><span>{label}</span><p>{value}</p></div>)}</div>
-      </section>
+    <section className="background-section" id="background">
+      <div className="section-heading"><p className="section-number">03</p><div><p className="eyebrow">Background</p><h2>Where I’m studying and what I’ve done alongside it.</h2></div></div>
+      <div className="timeline">{education.map((item) => <article key={item.period + item.title}><p className="timeline-period">{item.period}</p><div><h3>{item.title}</h3><p className="timeline-place">{item.place} · {item.location}</p><p>{item.note}</p></div></article>)}</div>
+      <div className="background-lower">
+        <div><p className="eyebrow">Certificates & training</p><div className="credential-list">{credentials.map(([year, title, issuer]) => <div key={title}><span>{year}</span><p><strong>{title}</strong><small>{issuer}</small></p></div>)}</div></div>
+        <div><p className="eyebrow">Work outside university</p><div className="plain-card"><h3>Sales employee · Albert Heijn</h3><p className="muted">Part-time, 2024 — present · Groningen</p><p>Working alongside my studies, helping customers, restocking shelves, and unloading deliveries.</p></div><div className="plain-card"><h3>Festival volunteer</h3><p className="muted">Neversea 2023 · Beach, Please! 2024</p><p>Managed access for artists, VIPs, and staff during busy shifts and helped resolve access problems as they came up.</p></div></div>
+      </div>
+    </section>
 
-      <section className="background-section" id="background">
-        <div className="section-heading background-heading">
-          <div><p className="section-label">Background</p><h2>Education and experience.</h2></div>
-          <a className="text-link" href={publicPath("/files/vladut-andrei-lambru-resume.pdf")} target="_blank" rel="noreferrer">Open full résumé <span aria-hidden="true">↗</span></a>
-        </div>
-        <div className="background-grid">
-          <div className="education-list">{education.map((item) => <article key={item.title}><p>{item.period}</p><div><h3>{item.title}</h3><strong>{item.institution}</strong><span>{item.description}</span></div></article>)}</div>
-          <aside className="background-aside">
-            <div><p className="section-label">Additional experience</p><h3>Store employee · Albert Heijn</h3><span>Part-time alongside university, 2024 – present</span><p>Customer support, stock and deliveries in a busy team environment.</p></div>
-            <div><p className="section-label">Certificates</p><ul><li>Propedeutic diploma · Hanze UAS, 2025</li><li>Cambridge English qualification · Score 173, 2024</li><li>Database Design · Oracle Academy, 2023</li></ul></div>
-          </aside>
-        </div>
-      </section>
-
-      <footer>
-        <div className="footer-copy"><p className="section-label">February 2027 internship</p><h2>Interested in the work?</h2><p>My project breakdowns, source links and résumé are all available here. You can reach me directly through LinkedIn.</p></div>
-        <div className="footer-actions">
-          <a className="button button-primary" href="https://www.linkedin.com/in/vladut-andrei-lambru/" target="_blank" rel="noreferrer">LinkedIn profile <span aria-hidden="true">↗</span></a>
-          <a className="button button-ghost" href="https://github.com/Vladut-Andrei-Lambru" target="_blank" rel="noreferrer">GitHub profile <span aria-hidden="true">↗</span></a>
-          <a className="button button-ghost" href={publicPath("/files/vladut-andrei-lambru-resume.pdf")} target="_blank" rel="noreferrer">Download résumé <span aria-hidden="true">↗</span></a>
-        </div>
-        <p className="footer-meta">© 2026 Vladut-Andrei Lambru</p>
-      </footer>
-    </main>
-  );
+    <footer><p className="footer-lead">Looking for a gameplay or technical design intern?</p><h2>Let’s talk about the work.</h2><div className="footer-links"><a href="https://www.linkedin.com/in/vladut-andrei-lambru/" target="_blank" rel="noreferrer">LinkedIn ↗</a><a href="https://github.com/Vladut-Andrei-Lambru" target="_blank" rel="noreferrer">GitHub ↗</a><a href={`${basePath}/files/vladut-andrei-lambru-resume.pdf`} target="_blank" rel="noreferrer">Résumé ↗</a></div><p className="footer-note">Vladut-Andrei Lambru · Designed and built in 2026</p></footer>
+  </main>;
 }
