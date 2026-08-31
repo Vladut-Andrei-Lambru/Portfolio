@@ -16,7 +16,7 @@ export function generateStaticParams(){ return projects.map((project)=>({slug:pr
 export default async function ProjectPage({params}:{params:Promise<{slug:string}>}){
   const {slug}=await params; const project=getProject(slug); if(!project) notFound();
   return <main className="case-page">
-    <header className="site-header case-header"><Link className="wordmark" href="/#top">Vlad Lambru<span>.</span></Link><Link className="back-link" href="/#work">← All work</Link><a className="header-contact" href="mailto:v.lambru@st.hanze.nl">Email me</a></header>
+    <header className="site-header case-header"><Link className="wordmark" href="/#top">Vlad Lambru<span>.</span></Link><Link className="back-link" href="/#work">← All work</Link><a className="header-contact" href={`${basePath}/files/vladut-andrei-lambru-resume.pdf`} target="_blank" rel="noreferrer">Résumé</a></header>
     <section className="case-hero"><div className="case-kicker"><span>{project.year}</span><span>{project.engine}</span></div><h1>{project.title}</h1><p>{project.summary}</p><div className="case-links">{project.links.map((link)=><a key={link.href} href={link.href} target="_blank" rel="noreferrer">{link.label} ↗</a>)}</div></section>
     <div className="case-hero-image"><Image unoptimized src={`${basePath}${project.hero}`} alt={`${project.title} gameplay`} fill priority sizes="100vw" /></div>
     {project.video&&<section className="video-section"><p className="label">Watch it in action</p><ProjectVideo video={project.video} /></section>}
