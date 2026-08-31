@@ -1,35 +1,19 @@
-# Vlad Lambru — Portfolio
+# Vladut-Andrei Lambru — Portfolio
 
-Editable Next.js portfolio configured for GitHub Pages.
+Personal portfolio for my gameplay programming, technical design and VR work.
 
-## Local editing
+Built with Next.js and TypeScript and deployed automatically with GitHub Pages.
 
-Install Node.js 22.13+ and run:
+## Editing
+
+- `app/page.tsx` — homepage content
+- `lib/projects.ts` — project details, links, images and videos
+- `app/globals.css` — colours and layout
+- `public/images/` — portfolio media
+
+Run locally with:
 
 ```bash
 npm install
 npm run dev
 ```
-
-Then open the local URL printed in the terminal.
-
-## Main files to edit
-
-- `app/page.tsx` — homepage text/layout
-- `lib/projects.ts` — project content
-- `app/globals.css` — styling
-- `public/images/` — images
-- `public/files/vladut-andrei-lambru-resume.pdf` — résumé
-
-## Deployment
-
-This repository includes `.github/workflows/deploy-pages.yml`.
-
-In GitHub:
-1. Settings → Pages.
-2. Under **Build and deployment**, choose **GitHub Actions**.
-3. Push/commit to `main`, or run the workflow manually from Actions.
-
-The configuration automatically handles both:
-- a project repo such as `Website` → `https://USERNAME.github.io/Website/`
-- a user Pages repo such as `USERNAME.github.io` → `https://USERNAME.github.io/`
