@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { projects } from "@/lib/projects";
-import HoverVideoPreview from "@/app/components/HoverVideoPreview";
+import { orderedProjects } from "@/lib/projects";
+import ProjectRail from "@/app/components/ProjectRail";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
@@ -56,25 +56,12 @@ export default function Home() {
     </section>
 
     <section className="project-section" id="work">
-      <div className="section-heading enter"><p className="label">Selected projects</p><h2>Gameplay and interaction systems.</h2><p>Three team projects showing my work in Unity, C# and VR.</p></div>
-      <div className="project-list">
-        {projects.map((project) => <article className="project-card enter" key={project.slug}>
-          <Link className="project-image" href={`/projects/${project.slug}`} aria-label={`Read the ${project.title} case study`}>
-            <HoverVideoPreview image={project.hero} alt={`${project.title} project screenshot`} video={project.videos?.[0]} />
-          </Link>
-          <div className="project-card-copy">
-            <p className="project-meta">{project.year} · {project.engine} · {project.team}</p>
-            <h3><Link href={`/projects/${project.slug}`}>{project.title}</Link></h3>
-            <p>{project.summary}</p>
-            <ul className="tag-list" aria-label="Project skills">{project.tags.map((tag) => <li key={tag}>{tag}</li>)}</ul>
-            <Link className="case-link" href={`/projects/${project.slug}`}>Project breakdown <span>↗</span></Link>
-          </div>
-        </article>)}
-      </div>
+      <div className="section-heading enter"><p className="label">Work</p><h2>Projects</h2><p>Unity, C# and VR work from university and client projects.</p></div>
+      <ProjectRail projects={orderedProjects} />
     </section>
 
     <section className="about-section" id="about">
-      <div className="section-heading enter"><p className="label">About</p><h2>Technical design backed by implementation.</h2></div>
+      <div className="section-heading enter"><p className="label">About</p><h2>What I work on</h2></div>
       <div className="about-grid">
         <div className="about-copy enter"><p>My work sits between design and programming. I prototype mechanics, implement them in Unity, test them with players and iterate with designers and artists. Recent projects have focused on VR interaction, movement, physics, cameras and feedback systems.</p></div>
         <div className="toolbox enter delay-one"><h3>Role and tools</h3><dl>
@@ -97,7 +84,7 @@ export default function Home() {
 
     <footer>
       <p className="label">Available from February 2027</p>
-      <h2>Interested in working together?</h2>
+      <h2>Contact</h2>
       <a className="email-link" href="mailto:v.lambru@st.hanze.nl">v.lambru@st.hanze.nl</a>
       <div className="footer-links"><a href="https://www.linkedin.com/in/vladut-andrei-lambru/" target="_blank" rel="noreferrer" aria-label="LinkedIn profile"><LinkedInIcon />LinkedIn</a><a href="https://github.com/Vladut-Andrei-Lambru" target="_blank" rel="noreferrer" aria-label="GitHub profile"><GitHubIcon />GitHub</a><a href={`${basePath}/files/vladut-andrei-lambru-resume.pdf`} target="_blank" rel="noreferrer">Résumé ↗</a></div>
       <p className="footer-note">Vladut-Andrei Lambru · CMGT student and gameplay programmer</p>

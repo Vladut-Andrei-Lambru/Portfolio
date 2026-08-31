@@ -37,6 +37,6 @@ export default function HoverVideoPreview({ image, alt, video }: Props) {
       allow="autoplay; encrypted-media"
       referrerPolicy="strict-origin-when-cross-origin"
     />}
-    {video?.type === "youtube" && <span className="preview-hint" aria-hidden="true">Hover to preview</span>}
+    {video?.type === "youtube" && <span className="preview-hint" aria-hidden="true">Gameplay preview</span>}
   </div>;
 }

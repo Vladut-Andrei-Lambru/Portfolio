@@ -1,8 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
+const execFileAsync = promisify(execFile);
 
 test("homepage uses the professional contact and current identity", async () => {
   const page = await read("app/page.tsx");
@@ -29,16 +32,16 @@ test("education shows the official Hanze and SeoulTech marks", async () => {
 test("visual system is dark, restrained and motion-aware", async () => {
   const css = await read("app/globals.css");
   assert.match(css, /--background:\s*#0d1017/i);
-  assert.match(css, /--surface:\s*#151a26/i);
-  assert.match(css, /--surface-raised:\s*#1c2230/i);
-  assert.match(css, /--text:\s*#f2f4f8/i);
-  assert.match(css, /--muted:\s*#a7b0c0/i);
-  assert.match(css, /--accent-violet:\s*#8b7cff/i);
-  assert.match(css, /--accent-blue:\s*#45c4ff/i);
-  assert.doesNotMatch(css, /accent-magenta/i);
+  assert.match(css, /--surface:\s*#151923/i);
+  assert.match(css, /--surface-raised:\s*#1b202c/i);
+  assert.match(css, /--text:\s*#f3f4f7/i);
+  assert.match(css, /--muted:\s*#aeb4c0/i);
+  assert.match(css, /--accent:\s*#9c8cff/i);
+  assert.match(css, /--accent-strong:\s*#b2a7ff/i);
+  assert.doesNotMatch(css, /accent-(?:blue|violet|magenta)/i);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.match(css, /caret-color:\s*transparent/);
-  assert.match(css, /\.project-card:nth-child\(2\)/);
+  assert.match(css, /scroll-snap-type:\s*x proximity/);
   assert.match(css, /\.portrait-frame:hover img/);
 });
 
@@ -46,9 +49,34 @@ test("homepage copy is direct and recruiter-facing", async () => {
   const page = await read("app/page.tsx");
   assert.match(page, /Technical Game Designer & Gameplay Programmer/);
   assert.match(page, /Unity, C# and VR development/);
-  assert.match(page, /Selected projects/);
+  assert.match(page, />Projects</);
+  assert.match(page, /Unity, C# and VR work from university and client projects/);
   assert.match(page, /Role and tools/);
-  assert.doesNotMatch(page, /actually talk through|what broke|before they can explain it|finished developer/i);
+  assert.doesNotMatch(page, /<h2>Gameplay and interaction systems|Interested in working together|actually talk through|what broke|before they can explain it|finished developer/i);
+});
+
+test("project data makes the top three easy to change", async () => {
+  const projects = await read("lib/projects.ts");
+  assert.match(projects, /featuredOrder\?:\s*1\s*\|\s*2\s*\|\s*3/);
+  assert.equal((projects.match(/featuredOrder:\s*[123]/g) ?? []).length, 3);
+  assert.match(projects, /export const orderedProjects/);
+  assert.match(projects, /Number\.POSITIVE_INFINITY/);
+});
+
+test("homepage uses an accessible horizontal project rail", async () => {
+  const page = await read("app/page.tsx");
+  const rail = await read("app/components/ProjectRail.tsx");
+  const css = await read("app/globals.css");
+
+  assert.match(page, /<ProjectRail projects=\{orderedProjects\}/);
+  assert.match(rail, /aria-label="Previous projects"/);
+  assert.match(rail, /aria-label="Next projects"/);
+  assert.match(rail, /aria-label="Project case studies"/);
+  assert.match(rail, /scrollBy/);
+  assert.match(rail, /clientWidth \* 0\.82/);
+  assert.match(css, /overflow-x:\s*auto/);
+  assert.match(css, /scroll-snap-align:\s*start/);
+  assert.match(css, /\.project-rail-card/);
 });
 
 test("homepage avoids numbered template sections", async () => {
@@ -78,10 +106,12 @@ test("project pages support multiple videos without forced playback", async () =
 
 test("homepage uses accessible hover video previews", async () => {
   const page = await read("app/page.tsx");
+  const rail = await read("app/components/ProjectRail.tsx");
   const preview = await read("app/components/HoverVideoPreview.tsx");
   const css = await read("app/globals.css");
 
-  assert.match(page, /HoverVideoPreview/);
+  assert.match(page, /ProjectRail/);
+  assert.match(rail, /HoverVideoPreview/);
   assert.match(preview, /onPointerEnter/);
   assert.match(preview, /onPointerLeave/);
   assert.match(preview, /\(hover: hover\)/);
@@ -137,4 +167,17 @@ test("public repository readmes point recruiters to the current portfolio", asyn
     assert.match(markdown, /https:\/\/vladut-andrei-lambru\.github\.io\/Portfolio\//, name);
     assert.match(markdown, /v\.lambru@st\.hanze\.nl/, name);
   }
+});
+
+test("public CV is a one-page project-first document with an editable source", async () => {
+  const pdf = new URL("../public/files/vladut-andrei-lambru-resume.pdf", import.meta.url);
+  const docx = new URL("../public/files/vladut-andrei-lambru-resume.docx", import.meta.url);
+  await access(docx);
+  const { stdout: info } = await execFileAsync("pdfinfo", [pdf.pathname]);
+  const { stdout: content } = await execFileAsync("pdftotext", [pdf.pathname, "-"]);
+
+  assert.match(info, /Pages:\s+1/);
+  for (const phrase of ["Virtual Life Support", "Tiny Spider Tiny Home", "Maker's Fair", "Unity", "C#", "VR/XR", "Git", "February 2027", "vladut-andrei-lambru.github.io/Portfolio"])
+    assert.match(content, new RegExp(phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"), phrase);
+  assert.doesNotMatch(content, /Europass|lvmbrxu|date of birth|nationality|passionate|energetic|always up for a challenge/i);
 });

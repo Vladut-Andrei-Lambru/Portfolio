@@ -1,6 +1,7 @@
 export type ProjectVideo = { type: "youtube" | "vimeo" | "mp4"; src: string; title: string; poster?: string };
 export type Project = {
   slug: string; title: string; year: string; engine: string; duration: string; team: string;
+  featuredOrder?: 1 | 2 | 3;
   hero: string; images: string[]; videos?: ProjectVideo[]; summary: string; brief: string; development: string; role: string;
   tags: string[]; links: { label: string; href: string }[];
   systems: { title: string; description: string; details: string[] }[]; outcome: string; learning: string;
@@ -9,6 +10,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "virtual-life-support", title: "Virtual Life Support", year: "2026", engine: "Unity VR · Meta Quest", duration: "8 weeks", team: "5 people",
+    featuredOrder: 1,
     hero: "/images/virtual-life-support/hero.jpg", images: ["/images/virtual-life-support/hero.jpg", "/images/virtual-life-support/01.png"],
     videos: [{ type: "youtube", src: "tFO7g93U6ew", title: "Virtual Life Support Project" }],
     summary: "A hand-tracked VR scenario designed to help CPR-trained people feel more confident using those skills in an emergency.",
@@ -27,6 +29,7 @@ export const projects: Project[] = [
   },
   {
     slug: "tiny-spider-tiny-home", title: "Tiny Spider Tiny Home", year: "2025", engine: "Unity", duration: "15 weeks", team: "5 people",
+    featuredOrder: 2,
     hero: "/images/tiny-spider/hero.jpg", images: ["/images/tiny-spider/hero.jpg", "/images/tiny-spider/01.png", "/images/tiny-spider/02.png", "/images/tiny-spider/03.png", "/images/tiny-spider/04.png", "/images/tiny-spider/05.png", "/images/tiny-spider/06.png", "/images/tiny-spider/07.png", "/images/tiny-spider/08.png"],
     videos: [{ type: "youtube", src: "vG7jiHwuDTQ", title: "Tiny Spider Tiny Home gameplay" }, { type: "youtube", src: "CfQb3SuM-Os", title: "Tiny Spider Tiny Home intro" }],
     summary: "A third-person game about a spider racing through a student room to switch off appliances before the tenant comes home.",
@@ -45,6 +48,7 @@ export const projects: Project[] = [
   },
   {
     slug: "makers-fair", title: "Maker’s Fair", year: "2025", engine: "Unity VR · Meta Quest 3", duration: "8 weeks", team: "5 people",
+    featuredOrder: 3,
     hero: "/images/makers-fair/hero.jpg", images: ["/images/makers-fair/hero.jpg", "/images/makers-fair/01.jpg", "/images/makers-fair/02.png", "/images/makers-fair/03.png", "/images/makers-fair/04.png"],
     videos: [{ type: "youtube", src: "34psfsuSL3U", title: "Maker's Fair part 1" }, { type: "youtube", src: "B_9jCtzeDWo", title: "Maker's Fair part 2" }],
     summary: "A VR construction game where the player builds a cart from planks, nails and wheels, then tests it against a bridge's weight limit.",
@@ -61,5 +65,11 @@ export const projects: Project[] = [
     learning: "Open-ended building needs readable feedback, especially in VR. The project also taught me that stable physics often comes from carefully controlling when connected objects are simulated, not simply increasing joint strength.",
   },
 ];
+
+export const orderedProjects = [...projects].sort((a, b) => {
+  const aOrder = a.featuredOrder ?? Number.POSITIVE_INFINITY;
+  const bOrder = b.featuredOrder ?? Number.POSITIVE_INFINITY;
+  return aOrder - bOrder;
+});
 
 export function getProject(slug: string) { return projects.find((project) => project.slug === slug); }
