@@ -1,7 +1,7 @@
 export type ProjectVideo = { type: "youtube" | "vimeo" | "mp4"; src: string; title: string; poster?: string };
 export type Project = {
   slug: string; title: string; year: string; engine: string; duration: string; team: string;
-  hero: string; images: string[]; video?: ProjectVideo; summary: string; brief: string; development: string; role: string;
+  hero: string; images: string[]; videos?: ProjectVideo[]; summary: string; brief: string; development: string; role: string;
   tags: string[]; links: { label: string; href: string }[];
   systems: { title: string; description: string; details: string[] }[]; outcome: string; learning: string;
 };
@@ -10,6 +10,7 @@ export const projects: Project[] = [
   {
     slug: "virtual-life-support", title: "Virtual Life Support", year: "2026", engine: "Unity VR · Meta Quest", duration: "8 weeks", team: "5 people",
     hero: "/images/virtual-life-support/hero.jpg", images: ["/images/virtual-life-support/hero.jpg", "/images/virtual-life-support/01.png"],
+    videos: [{ type: "youtube", src: "tFO7g93U6ew", title: "Virtual Life Support Project" }],
     summary: "A hand-tracked VR scenario designed to help CPR-trained people feel more confident using those skills in an emergency.",
     brief: "Virtual Life Support asked our university team to explore how VR could help people who had already completed CPR training feel more prepared to act in real life. The goal was not to replace the course or teach the procedure from the beginning. It was to let someone practise the decisions, pressure and physical sequence of an emergency in a safe setting. We chose a public playground because it gave us room for bystanders, noise and interruptions rather than presenting CPR as an isolated exercise.",
     development: "We first interviewed CPR trainers and people with practical experience. That research changed the scenario: the player must call 112, ask a bystander to bring an AED and only then begin compressions. A barking dog and nearby children create interruptions that have to be handled without abandoning the casualty. When the AED arrives, the player exposes the chest and wipes away blood before placing the pads—a step we added after noticing that wet conditions were missing from the company's existing scenario. We tested the final build with CPR-trained coworkers, used their feedback for the last adjustments and kept the live monitor visible so players could correct their rhythm and depth while practising, not only after finishing.",
@@ -27,6 +28,7 @@ export const projects: Project[] = [
   {
     slug: "tiny-spider-tiny-home", title: "Tiny Spider Tiny Home", year: "2025", engine: "Unity", duration: "15 weeks", team: "5 people",
     hero: "/images/tiny-spider/hero.jpg", images: ["/images/tiny-spider/hero.jpg", "/images/tiny-spider/01.png", "/images/tiny-spider/02.png", "/images/tiny-spider/03.png", "/images/tiny-spider/04.png", "/images/tiny-spider/05.png", "/images/tiny-spider/06.png", "/images/tiny-spider/07.png", "/images/tiny-spider/08.png"],
+    videos: [{ type: "youtube", src: "vG7jiHwuDTQ", title: "Tiny Spider Tiny Home gameplay" }, { type: "youtube", src: "CfQb3SuM-Os", title: "Tiny Spider Tiny Home intro" }],
     summary: "A third-person game about a spider racing through a student room to switch off appliances before the tenant comes home.",
     brief: "Our client-style university brief asked for a game that could make young people more aware of everyday energy waste. We wanted the message to affect the play instead of appearing as a list of facts. The player becomes a spider living in a student's room. The tenant keeps leaving appliances on, the bills are becoming unaffordable and eviction would leave the spider without a warm home. That gives a small character a clear personal reason to save electricity rather than making the player act because a tutorial tells them to.",
     development: "A short introduction establishes the stakes, then the student leaves for university and a timer starts. The player has to climb furniture, walls and ceilings, swing across gaps and reach every appliance before the tenant returns. Each switch changes the room and advances the objective. The powered heater also launches the spider into the air, but loses that behaviour once it is switched off, turning the energy state into a movement tool as well as a task. We planned a larger game, but team problems forced us to reduce the scope. We chose to finish one detailed room and concentrate on the part that made the project distinct: readable third-person movement across any surface.",
@@ -44,6 +46,7 @@ export const projects: Project[] = [
   {
     slug: "makers-fair", title: "Maker’s Fair", year: "2025", engine: "Unity VR · Meta Quest 3", duration: "8 weeks", team: "5 people",
     hero: "/images/makers-fair/hero.jpg", images: ["/images/makers-fair/hero.jpg", "/images/makers-fair/01.jpg", "/images/makers-fair/02.png", "/images/makers-fair/03.png", "/images/makers-fair/04.png"],
+    videos: [{ type: "youtube", src: "34psfsuSL3U", title: "Maker's Fair part 1" }, { type: "youtube", src: "B_9jCtzeDWo", title: "Maker's Fair part 2" }],
     summary: "A VR construction game where the player builds a cart from planks, nails and wheels, then tests it against a bridge's weight limit.",
     brief: "Maker's Fair is set thirty years in the future, after automated systems have made everyday craft skills almost disappear. Woodworking and metalworking are no longer passed down because people rarely need to make or repair anything themselves. A group of older makers organises a fair to put those skills back into people's hands. The full idea included several craft areas, but within eight weeks we chose to complete one woodworking game rather than build several shallow demonstrations.",
     development: "The player receives planks, wheels, nails and a hammer and has to construct a cart that can cross a bridge. Our first prototype deliberately gave very little instruction because we wanted the freedom of building with LEGO. Testing showed that players enjoyed experimenting but could not tell what the game understood. We kept the open construction and added blueprints plus contextual holograms, such as showing a possible wheel position when one is picked up. Once the building interaction worked, we added a reason to make deliberate choices: every component has weight and the finished cart must stay below the bridge's load limit. The final challenge therefore tests both whether the cart holds together and whether the player built efficiently.",

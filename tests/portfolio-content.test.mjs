@@ -57,15 +57,39 @@ test("homepage avoids numbered template sections", async () => {
   assert.doesNotMatch(page, />0[123]</);
 });
 
-test("project pages support video without fake UI", async () => {
+test("project pages support multiple videos without forced playback", async () => {
   const projectPage = await read("app/projects/[slug]/page.tsx");
   const projectData = await read("lib/projects.ts");
   assert.match(projectData, /"youtube"\s*\|\s*"vimeo"\s*\|\s*"mp4"/);
+  assert.match(projectData, /videos\?:\s*ProjectVideo\[\]/);
+  assert.match(projectData, /vG7jiHwuDTQ/);
+  assert.match(projectData, /CfQb3SuM-Os/);
+  assert.match(projectData, /tFO7g93U6ew/);
+  assert.match(projectData, /34psfsuSL3U/);
+  assert.match(projectData, /B_9jCtzeDWo/);
   assert.match(projectPage, /youtube-nocookie\.com/);
   assert.match(projectPage, /referrerPolicy="strict-origin-when-cross-origin"/);
+  assert.match(projectPage, /project\.videos\.map/);
+  assert.doesNotMatch(projectPage, /autoplay=1/);
   assert.doesNotMatch(projectPage, /section-number/);
   assert.match(projectPage, />Résumé</);
   assert.doesNotMatch(projectPage, /Email me/);
+});
+
+test("homepage uses accessible hover video previews", async () => {
+  const page = await read("app/page.tsx");
+  const preview = await read("app/components/HoverVideoPreview.tsx");
+  const css = await read("app/globals.css");
+
+  assert.match(page, /HoverVideoPreview/);
+  assert.match(preview, /onPointerEnter/);
+  assert.match(preview, /onPointerLeave/);
+  assert.match(preview, /\(hover: hover\)/);
+  assert.match(preview, /prefers-reduced-motion: reduce/);
+  assert.match(preview, /autoplay=1/);
+  assert.match(preview, /mute=1/);
+  assert.match(preview, /youtube-nocookie\.com/);
+  assert.match(css, /\.hover-video-preview/);
 });
 
 test("project case studies describe the verified work and ownership clearly", async () => {

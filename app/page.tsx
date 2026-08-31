@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { projects } from "@/lib/projects";
+import HoverVideoPreview from "@/app/components/HoverVideoPreview";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
@@ -59,7 +60,7 @@ export default function Home() {
       <div className="project-list">
         {projects.map((project) => <article className="project-card enter" key={project.slug}>
           <Link className="project-image" href={`/projects/${project.slug}`} aria-label={`Read the ${project.title} case study`}>
-            <Image unoptimized src={`${basePath}${project.hero}`} alt={`${project.title} project screenshot`} fill sizes="(max-width: 760px) 100vw, 56vw" />
+            <HoverVideoPreview image={project.hero} alt={`${project.title} project screenshot`} video={project.videos?.[0]} />
           </Link>
           <div className="project-card-copy">
             <p className="project-meta">{project.year} · {project.engine} · {project.team}</p>
