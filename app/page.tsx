@@ -4,6 +4,10 @@ import { orderedProjects } from "@/lib/projects";
 import ProjectRail from "@/app/components/ProjectRail";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const socialIcons = {
+  github: `${basePath}/icons/github.svg`,
+  linkedin: `${basePath}/icons/linkedin.svg`,
+};
 
 const education = [
   { period: "Aug 2026 — Jan 2027", title: "Computer Science exchange", place: "SeoulTech", location: "Seoul, South Korea", note: "A semester abroad focused on computer science and working in a new academic culture.", logo: "/images/education/seoultech.png", logoAlt: "SeoulTech" },
@@ -18,12 +22,8 @@ const credentials = [
   ["2023", "Database Design", "Oracle Academy"],
 ];
 
-function GitHubIcon() {
-  return <svg className="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C6.48 2 2 6.58 2 12.23c0 4.52 2.87 8.35 6.84 9.71.5.1.68-.22.68-.49v-1.9c-2.78.62-3.37-1.21-3.37-1.21-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.63.07-.63 1 .08 1.53 1.06 1.53 1.06.9 1.57 2.35 1.12 2.92.86.09-.66.35-1.12.64-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05A9.3 9.3 0 0 1 12 6.96a9.3 9.3 0 0 1 2.5.35c1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.8-4.57 5.05.36.32.68.94.68 1.9v2.78c0 .27.18.59.69.49A10.24 10.24 0 0 0 22 12.23C22 6.58 17.52 2 12 2Z" /></svg>;
-}
-
-function LinkedInIcon() {
-  return <svg className="social-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5.36 3.5A2.36 2.36 0 1 1 5.35 8.2a2.36 2.36 0 0 1 .01-4.71ZM3.32 9.77H7.4V21H3.32V9.77Zm6.62 0h3.91v1.54h.06c.54-1.03 1.88-2.12 3.86-2.12 4.13 0 4.9 2.72 4.9 6.26V21h-4.08v-4.92c0-1.17-.02-2.68-1.64-2.68-1.64 0-1.89 1.28-1.89 2.6v5H9.94V9.77Z" /></svg>;
+function SocialIcon({ name }: { name: "github" | "linkedin" }) {
+  return <Image className="social-icon" src={socialIcons[name]} alt="" width={16} height={16} aria-hidden="true" />;
 }
 
 export default function Home() {
@@ -44,8 +44,8 @@ export default function Home() {
           <a className="button" href={`${basePath}/files/vladut-andrei-lambru-resume.pdf`} target="_blank" rel="noreferrer">Résumé ↗</a>
         </div>
         <div className="hero-links">
-          <a href="https://github.com/Vladut-Andrei-Lambru" target="_blank" rel="noreferrer" aria-label="GitHub profile"><GitHubIcon />GitHub</a>
-          <a href="https://www.linkedin.com/in/vladut-andrei-lambru/" target="_blank" rel="noreferrer" aria-label="LinkedIn profile"><LinkedInIcon />LinkedIn</a>
+          <a href="https://github.com/Vladut-Andrei-Lambru" target="_blank" rel="noreferrer" aria-label="GitHub profile"><SocialIcon name="github" />GitHub</a>
+          <a href="https://www.linkedin.com/in/vladut-andrei-lambru/" target="_blank" rel="noreferrer" aria-label="LinkedIn profile"><SocialIcon name="linkedin" />LinkedIn</a>
           <a href="mailto:v.lambru@st.hanze.nl">v.lambru@st.hanze.nl</a>
         </div>
       </div>
@@ -86,7 +86,7 @@ export default function Home() {
       <p className="label">Available from February 2027</p>
       <h2>Contact</h2>
       <a className="email-link" href="mailto:v.lambru@st.hanze.nl">v.lambru@st.hanze.nl</a>
-      <div className="footer-links"><a href="https://www.linkedin.com/in/vladut-andrei-lambru/" target="_blank" rel="noreferrer" aria-label="LinkedIn profile"><LinkedInIcon />LinkedIn</a><a href="https://github.com/Vladut-Andrei-Lambru" target="_blank" rel="noreferrer" aria-label="GitHub profile"><GitHubIcon />GitHub</a><a href={`${basePath}/files/vladut-andrei-lambru-resume.pdf`} target="_blank" rel="noreferrer">Résumé ↗</a></div>
+      <div className="footer-links"><a href="https://www.linkedin.com/in/vladut-andrei-lambru/" target="_blank" rel="noreferrer" aria-label="LinkedIn profile"><SocialIcon name="linkedin" />LinkedIn</a><a href="https://github.com/Vladut-Andrei-Lambru" target="_blank" rel="noreferrer" aria-label="GitHub profile"><SocialIcon name="github" />GitHub</a><a href={`${basePath}/files/vladut-andrei-lambru-resume.pdf`} target="_blank" rel="noreferrer">Résumé ↗</a></div>
       <p className="footer-note">Vladut-Andrei Lambru · CMGT student and gameplay programmer</p>
     </footer>
   </main>;
