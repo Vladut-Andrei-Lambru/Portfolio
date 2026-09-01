@@ -19,6 +19,34 @@ test("homepage uses the professional contact and current identity", async () => 
   assert.doesNotMatch(page, /className="header-contact" href="mailto:/);
 });
 
+test("social links use locally hosted standardized brand marks", async () => {
+  const page = await read("app/page.tsx");
+  await access(new URL("../public/icons/github.svg", import.meta.url));
+  await access(new URL("../public/icons/linkedin.svg", import.meta.url));
+  assert.match(page, /icons\/github\.svg/);
+  assert.match(page, /icons\/linkedin\.svg/);
+  assert.doesNotMatch(page, /function GitHubIcon|function LinkedInIcon/);
+});
+
+test("static export includes GitHub Pages-compatible security metadata", async () => {
+  const layout = await read("app/layout.tsx");
+  assert.match(layout, /httpEquiv="Content-Security-Policy"/);
+  assert.match(layout, /script-src 'self' 'unsafe-inline'/);
+  assert.match(layout, /frame-src https:\/\/www\.youtube-nocookie\.com https:\/\/player\.vimeo\.com/);
+  assert.match(layout, /name="referrer" content="strict-origin-when-cross-origin"/);
+});
+
+test("Netlify migration headers include the full response-header policy", async () => {
+  const headers = await read("public/_headers");
+  const readme = await read("README.md");
+  assert.match(headers, /X-Content-Type-Options: nosniff/);
+  assert.match(headers, /Referrer-Policy: strict-origin-when-cross-origin/);
+  assert.match(headers, /Permissions-Policy: camera=\(\), microphone=\(\), geolocation=\(\)/);
+  assert.match(headers, /Content-Security-Policy:.*script-src 'self' 'unsafe-inline'/);
+  assert.match(readme, /GitHub Pages does not apply custom response headers/i);
+  assert.match(readme, /_headers/);
+});
+
 test("education shows the official Hanze and SeoulTech marks", async () => {
   const page = await read("app/page.tsx");
   assert.match(page, /images\/education\/hanze\.svg/);
