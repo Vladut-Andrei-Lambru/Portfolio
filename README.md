@@ -103,3 +103,13 @@ NEXT_PUBLIC_BASE_PATH=/Portfolio npm run build
 ```
 
 Pushing to `main` triggers the GitHub Pages workflow in `.github/workflows/deploy-pages.yml`.
+
+## Security headers
+
+GitHub Pages does not apply custom response headers, so the live GitHub Pages build uses the protections that static HTML can set: a Content Security Policy meta tag and a strict referrer meta tag in `app/layout.tsx`.
+
+The CSP keeps external scripts on this site’s own origin and allows frames only from YouTube’s privacy-enhanced domain and Vimeo. Next.js needs inline hydration scripts, so `'unsafe-inline'` remains enabled for inline scripts; removing it would break the project rail and hover previews.
+
+`public/_headers` is included for a possible Netlify deployment. Netlify reads that file and can send the full policy as HTTP response headers, including `X-Content-Type-Options`, `Permissions-Policy`, `X-Frame-Options` and `frame-ancestors`. GitHub Pages serves the file but does not enforce it.
+
+The GitHub and LinkedIn marks in `public/icons/` are locally hosted copies from [Simple Icons](https://simpleicons.org/), so the live site does not depend on an icon CDN.
