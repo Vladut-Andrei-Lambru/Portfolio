@@ -1,0 +1,12 @@
+node_modules/
+.next/
+out/
+.DS_Store
+npm-debug.log*
+.superpowers/
+cv-render*/
+project-layout-preview.*
+render_project_mockup.py
+
+# Local IDE state
+.vs/
