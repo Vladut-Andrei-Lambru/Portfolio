@@ -19,9 +19,30 @@ const contentSecurityPolicy = [
 ].join("; ");
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://vladut-andrei-lambru.github.io"),
+
   title: "Vladut-Andrei Lambru | Gameplay Programming & Technical Design",
+
   description:
     "Gameplay mechanics, game flow and technical design portfolio by CMGT student Vladut-Andrei Lambru. Built with Unity and C#.",
+
+  openGraph: {
+    title: "Vladut-Andrei Lambru | Gameplay Programming & Technical Design",
+    description:
+      "Gameplay programming and technical game design portfolio.",
+    url: "https://vladut-andrei-lambru.github.io/",
+    siteName: "Vlad Lambru Portfolio",
+    images: [
+      {
+        url: "/images/social_preview.png",
+        width: 1200,
+        height: 627,
+        alt: "Vlad Lambru gameplay programming portfolio",
+      },
+    ],
+    type: "website",
+  },
+
   icons: {
     icon: `${basePath}/favicon.svg`,
     shortcut: `${basePath}/favicon.svg`,
