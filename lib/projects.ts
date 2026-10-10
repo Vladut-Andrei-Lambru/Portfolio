@@ -5,6 +5,16 @@ export type ProjectVideo = {
   poster?: string;
 };
 
+export type ProjectEvidence = {
+  type: "image" | "video";
+  src: string;
+  title: string;
+  caption: string;
+  width: number;
+  height: number;
+  poster?: string;
+};
+
 export type Project = {
   slug: string;
   title: string;
@@ -16,11 +26,19 @@ export type Project = {
   hero: string;
   images: string[];
   videos?: ProjectVideo[];
+  evidence?: ProjectEvidence[];
   summary: string;
   contribution: string;
   brief: string;
   development: string;
   role: string;
+  testingNote?: string;
+  iterations?: {
+    title: string;
+    observation: string;
+    change: string;
+    result: string;
+  }[];
   tags: string[];
   links: {
     label: string;
@@ -57,17 +75,72 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "virtual-life-support",
+    evidence: [
+      {
+        type: "video",
+        src: "/videos/virtual-life-support/early-gesture-prototype.mp4",
+        title: "Early gesture experiment",
+        caption:
+          "Early gesture experiment recorded on a phone. Supporting development evidence; low-resolution footage.",
+        width: 464,
+        height: 832,
+        poster:
+          "/images/virtual-life-support/early-gesture-prototype-poster.jpg",
+      },
+      {
+        type: "image",
+        src: "/images/virtual-life-support/evidence-animation-integration.png",
+        title: "Integrating character animations",
+        caption:
+          "Animator transition setup used to integrate team-created character animations.",
+        width: 1101,
+        height: 384,
+      },
+      {
+        type: "image",
+        src: "/images/virtual-life-support/evidence-cpr-interaction.jpg",
+        title: "Hand-tracked compressions",
+        caption:
+          "Hand-tracked chest interaction in the recorded emergency scenario.",
+        width: 1280,
+        height: 720,
+      },
+      {
+        type: "image",
+        src: "/images/virtual-life-support/evidence-results-feedback.jpg",
+        title: "Compression feedback after a run",
+        caption:
+          "The prototype result panel reports compression measurements after the scenario. These prototype measurements have not been clinically validated.",
+        width: 1280,
+        height: 720,
+      },
+      {
+        type: "video",
+        src: "/videos/virtual-life-support/aed-interaction-demo.mp4",
+        title: "AED interaction in motion",
+        caption: "AED interaction from the scenario demonstration.",
+        width: 854,
+        height: 480,
+        poster: "/images/virtual-life-support/aed-interaction-demo-poster.jpg",
+      },
+      {
+        type: "image",
+        src: "/images/virtual-life-support/evidence-aed-interaction.jpg",
+        title: "AED pad placement",
+        caption: "AED interaction and pad placement in the recorded scenario.",
+        width: 1280,
+        height: 720,
+      },
+    ],
     title: "Virtual Life Support",
     year: "2026",
     engine: "Unity VR · Meta Quest",
     duration: "8 weeks",
     team: "5 people",
-    roleLabel: "Gameplay programmer",
+    roleLabel: "Lead programmer",
     language: "C#",
     featuredOrder: 2,
-
     hero: "/images/virtual-life-support/01.png",
-
     images: [
       "/images/virtual-life-support/hero.jpg",
       "/images/virtual-life-support/01.png",
@@ -76,7 +149,6 @@ export const projects: Project[] = [
       "/images/virtual-life-support/04.png",
       "/images/virtual-life-support/05.png",
     ],
-
     videos: [
       {
         type: "youtube",
@@ -84,30 +156,47 @@ export const projects: Project[] = [
         title: "Virtual Life Support Project",
       },
     ],
-
     contribution:
-      "Hand tracking, chest compression, live feedback and scenario progression.",
-
+      "Lead programming: hand-tracked CPR, progression, feedback, UI, animation integration and level design.",
     summary:
       "A hand-tracked VR scenario designed to help CPR-trained people feel more confident using those skills in an emergency.",
-
     brief:
-      "Virtual Life Support asked our university team to explore how VR could help people who had already completed CPR training feel more prepared to act in real life. The goal was not to replace the course or teach the procedure from the beginning. It was to let someone practise the decisions, pressure and physical sequence of an emergency in a safe setting. We chose a public playground because it gave us room for bystanders, noise and interruptions rather than presenting CPR as an isolated exercise.",
-
+      "Develop a VR scenario with Virtual Life Support for people who have already completed CPR training. The aim was to practise emergency decisions and the physical sequence under pressure.",
     development:
-      "We first interviewed CPR trainers and people with practical experience. That research changed the scenario: the player must call 112, ask a bystander to bring an AED and only then begin compressions. A barking dog and nearby children create interruptions that have to be handled without abandoning the casualty. When the AED arrives, the player exposes the chest and wipes away blood before placing the pads—a step we added after noticing that wet conditions were missing from the company's existing scenario. We tested the final build with CPR-trained coworkers, used their feedback for the last adjustments and kept the live monitor visible so players could correct their rhythm and depth while practising, not only after finishing.",
-
-    role:
-      "I worked mainly on the programming: hand placement, chest compressions, scenario logic, gestures, the live CPR monitor and the results screen. I also helped turn research findings into concrete interactions. This was a five-person project, and the final prototype was a team result.",
-
-    tags: [
-      "Unity",
-      "C#",
-      "VR",
-      "Hand tracking",
-      "User testing",
+      "Research with CPR-trained people informed a playground emergency with bystanders, an AED and distractions. I translated the scenario flowchart into prerequisite flags, prototyped gestures with simple objects and integrated the interactions into a complete playable loop.",
+    role: "I led programming for hand tracking, chest compressions, gestures, scenario progression and performance feedback. I implemented world-space UI, integrated animations created by teammates and contributed to level design. My earlier Red Cross CPR courses informed the interaction prototypes; research and headset testing informed the revisions.",
+    iterations: [
+      {
+        title: "From a flowchart to coordinated interactions",
+        observation:
+          "Research highlighted the difficulty of making decisions and directing bystanders under pressure, alongside performing CPR.",
+        change:
+          "I used prerequisite and completion flags to connect the scenario. Point-and-hold interactions delegate tasks, while a two-hand stop-and-push gesture signals crowd control.",
+        result:
+          "Interactions report progress without directly controlling every later script. Configured prerequisites coordinate bystanders, distractions and AED actions.",
+      },
+      {
+        title: "Making feedback readable during CPR",
+        observation:
+          "First-time VR users needed help understanding the interaction. Think-aloud testing with CPR-certified participants also exposed unclear guidance and object placement.",
+        change:
+          "We revised tutorials, immediate compression feedback and scene placement. I positioned the world-space monitor and important objects so players could check feedback with less head movement.",
+        result:
+          "The revised scenario presents rhythm and depth feedback during compressions and a performance summary afterwards. Participants reported that the distractions created pressure; this feedback does not establish training effectiveness.",
+      },
+      {
+        title: "Changing interactions for physical comfort",
+        observation:
+          "The breathing-check prototype required an uncomfortable close head position. Chest compressions in mid-air also lacked resistance.",
+        change:
+          "We removed the breathing-check interaction. For demo day, we supplied a pillow for players to press against during hand-tracked compressions.",
+        result:
+          "The final prototype uses the revised interaction sequence and the demo adds physical resistance. Validation against a training manikin remains further work.",
+      },
     ],
-
+    testingNote:
+      "Participant testing documents are kept private at their request. Feedback is summarised here without identifying participants.",
+    tags: ["Unity", "C#", "VR", "Hand tracking", "User testing"],
     links: [
       {
         label: "GitHub",
@@ -122,12 +211,11 @@ export const projects: Project[] = [
         href: "https://www.linkedin.com/feed/update/urn:li:activity:7419451513338548224/",
       },
     ],
-
     systems: [
       {
         title: "Hand-tracked chest compressions",
         description:
-          "Both hands must be in the correct position before a compression is accepted. Hand movement is translated into compression depth, while the monitor reports rhythm and depth during the exercise.",
+          "Both hands must be in the configured position before a compression is accepted. Hand movement drives compression depth; the in-world monitor reports depth and rhythm during the exercise.",
         details: [
           "Two-hand placement checks",
           "Continuous compression depth",
@@ -135,46 +223,41 @@ export const projects: Project[] = [
         ],
       },
       {
-        title: "A complete CPR sequence",
+        title: "Guided emergency response",
         description:
-          "A flag-based scenario system keeps the training steps in order. The player must call 112, ask someone to bring an AED and begin CPR before later events can happen. A barking dog and nearby children interrupt the exercise; once the AED arrives, the player exposes and dries the chest, follows its instructions and continues until the ambulance arrives.",
+          "Configurable prerequisite flags connect calling 112, delegating AED retrieval, CPR and chest preparation. Bystander and distraction behaviours use scenario progress and timing settings. Point-and-hold confirmation and the two-hand gesture provide different ways to interact with the scene.",
         details: [
-          "Ordered actions without one long script",
-          "Dog and children as interruptions",
-          "AED preparation includes drying blood from the chest",
+          "Prerequisites coordinate actions and events",
+          "Hold confirmation limits accidental selection",
+          "Gesture arming and cooldown control activation",
         ],
       },
       {
-        title: "Progress and scoring stay separate",
+        title: "Feedback across the scenario and results",
         description:
-          "Scenario flags decide which actions and events can happen, but they do not inflate the performance score. The result is based on compression depth, rhythm, and active CPR time. An in-world monitor gives immediate feedback, followed by a results screen after the scenario.",
+          "Scenario progress stays separate from compression measurements. A world-space monitor displays live feedback, while the completed run's metrics are retained for the results scene. Restarting clears the stored run.",
         details: [
-          "Separate scenario and scoring logic",
-          "Live in-world monitor",
-          "Post-scenario performance summary",
+          "Separate progression and performance feedback",
+          "World-space tutorials and monitor",
+          "Run metrics carried into the results scene",
         ],
       },
     ],
-
     challenge: {
       problem:
         "The scenario needed to guide a complete emergency response without making every interaction depend directly on the next script.",
       decision:
         "I used configurable prerequisite flags to unlock behaviours and objects. Scenario progression stays separate from the compression measurements and final feedback.",
       result:
-        "Research and testing shaped a complete scenario, from the emergency call to the AED and ambulance. Trainers and CPR-trained testers could follow the sequence while receiving live feedback.",
+        "Configured prerequisites unlock scenario actions independently of the compression score. This lets the sequence change without treating completed tasks as better CPR performance.",
     },
-
     outcome:
-      "We did not have access to a CPR manikin, so we used a pillow to give testers physical resistance while keeping the hand-tracked interaction visible in VR. The prototype received 11/12 and was selected as the strongest of five student prototypes. Our company contact told us the result was substantially better than he had expected from the brief.",
-
+      "Delivered a playable hand-tracked emergency scenario in eight weeks, assessed at 9.2/10 (11/12 assessment points). At demo day, the client praised its immersion and the amount delivered. Participants described the distractions as disruptive and overwhelming, matching the scenario's intended pressure.",
     learning:
-      "The research mattered most when it changed the interaction. Adding the wet or bloody chest step, separating scenario progress from scoring and keeping feedback visible during CPR all came from looking beyond the first version of the idea.",
-
+      "A working desktop prototype did not guarantee a comfortable or understandable headset interaction. Early integration of team assets and repeated headset checks helped expose guidance, tracking and placement problems before the final demonstration.",
     furtherWork:
       "A next step would be stronger validation of tracking and compression measurements against a physical training manikin. The pillow gave resistance during testing, but the prototype does not establish clinical accuracy.",
   },
-
   {
     slug: "tiny-spider-tiny-home",
     title: "Tiny Spider Tiny Home",
@@ -182,12 +265,10 @@ export const projects: Project[] = [
     engine: "Unity",
     duration: "15 weeks",
     team: "5 people",
-    roleLabel: "Gameplay programmer",
+    roleLabel: "Lead programmer",
     language: "C#",
     featuredOrder: 1,
-
     hero: "/images/tiny-spider/05.png",
-
     images: [
       "/images/tiny-spider/hero.jpg",
       "/images/tiny-spider/01.png",
@@ -199,7 +280,6 @@ export const projects: Project[] = [
       "/images/tiny-spider/07.png",
       "/images/tiny-spider/08.png",
     ],
-
     videos: [
       {
         type: "youtube",
@@ -212,30 +292,27 @@ export const projects: Project[] = [
         title: "Tiny Spider Tiny Home intro",
       },
     ],
-
     contribution:
-      "Surface movement, web swinging, camera collision and appliance interactions.",
-
+      "Lead programming: surface movement, web swinging, camera, interactions, UI/UX and level design.",
     summary:
       "A third-person game about a spider racing through a student room to switch off appliances before the tenant comes home.",
-
     brief:
-      "Our client-style university brief asked for a game that could make young people more aware of everyday energy waste. We wanted the message to affect the play instead of appearing as a list of facts. The player becomes a spider living in a student's room. The tenant keeps leaving appliances on, the bills are becoming unaffordable and eviction would leave the spider without a warm home. That gives a small character a clear personal reason to save electricity rather than making the player act because a tutorial tells them to.",
-
+      "Build a game about everyday energy waste. The player is a spider switching off appliances before a student returns home, combining a timed objective with traversal around a room.",
     development:
-      "A short introduction establishes the stakes, then the student leaves for university and a timer starts. The player has to climb furniture, walls and ceilings, swing across gaps and reach every appliance before the tenant returns. Each switch changes the room and advances the objective. The powered heater also launches the spider into the air, but loses that behaviour once it is switched off, turning the energy state into a movement tool as well as a task. We planned a larger game, but team problems forced us to reduce the scope. We chose to finish one detailed room and concentrate on the part that made the project distinct: readable third-person movement across any surface.",
-
-    role:
-      "I built the movement, surface detection, camera collision, web swing and appliance interactions in C#. I also worked on the level design, UI/UX, intro flow and smaller interactions such as the active heater launching the spider. I implemented the screen-space edge-detection outline used for the cartoon look. I did not create the art assets; this was a team project.",
-
-    tags: [
-      "Unity",
-      "C#",
-      "Character controller",
-      "Camera",
-      "Physics",
+      "We reduced the scope to one detailed room and concentrated on traversal. Appliance states affect both the objective and movement: the powered heater launches the spider, but stops doing so when switched off.",
+    role: "I led programming and built surface traversal, web swinging, camera collision and appliance interactions. I also worked on level design, UI/UX, the intro flow and the screen-space outline effect. Teammates created the art assets.",
+    iterations: [
+      {
+        title: "Finishing the strongest part of the game",
+        observation:
+          "The team originally planned a larger game, but the available scope had to be reduced.",
+        change:
+          "We focused on one detailed student room. I concentrated on surface traversal, the camera, web swinging and appliance interactions.",
+        result:
+          "The finished room supports the timed objective and movement across floors, walls and ceilings. Corners and the swing-to-crawl handoff remain priorities for further testing.",
+      },
     ],
-
+    tags: ["Unity", "C#", "Character controller", "Camera", "Physics"],
     links: [
       {
         label: "Team GitHub repository",
@@ -246,7 +323,6 @@ export const projects: Project[] = [
         href: "https://www.dropbox.com/scl/fi/wrz5v9rhpgfmupac32r56/TinySpiderTinyHome.exe?rlkey=kox9tyhxfy50000pahcybk43i&st=15tt0pub&dl=0",
       },
     ],
-
     systems: [
       {
         title: "One controller for every surface",
@@ -279,7 +355,6 @@ export const projects: Project[] = [
         ],
       },
     ],
-
     challenge: {
       problem:
         "The main movement challenge was detecting transitions between floors, walls and ceilings while keeping the camera understandable. Separate rules for each surface would have made those transitions harder to maintain.",
@@ -288,19 +363,71 @@ export const projects: Project[] = [
       result:
         "The final controller supports traversal around the student room, with a camera that checks for furniture between it and the spider. Corners and surface transitions remained the main areas to tune.",
     },
-
     outcome:
-      "The finished room combines a timed objective with movement that makes the player think at a spider's scale. We had planned to expand the game, but team issues forced us to reduce the scope and finish the strongest part: traversal through one detailed student room.",
-
+      "Delivered a playable room combining floor, wall and ceiling traversal, web swinging and a timed appliance objective.",
     learning:
-      "The difficult part was not making the spider move once; it was keeping that movement predictable at corners, on ceilings and around furniture. Treating every crawlable wall as a surface and keeping the camera independent from the spider's roll made the final controller much easier to read.",
-
+      "The difficult work was keeping traversal predictable at corners and making the camera readable on ceilings. Surface normals for crawling and independent camera roll made those behaviours easier to tune.",
     furtherWork:
       "The next improvement would be consolidating surface detection into one shared result for movement and visual alignment, then testing difficult corners and the handoff between swinging and crawling.",
   },
-
   {
     slug: "no-click-sherlock",
+    evidence: [
+      {
+        type: "image",
+        src: "/images/no-click-sherlock/evidence-navigation-cue.png",
+        title: "Making destinations easier to find",
+        caption:
+          "The destination building highlights when the player approaches it.",
+        width: 697,
+        height: 586,
+      },
+      {
+        type: "video",
+        src: "/videos/no-click-sherlock/dialogue-and-navigation.mp4",
+        title: "Dialogue and hub navigation",
+        caption: "Dialogue choice followed by movement through the hub.",
+        width: 854,
+        height: 480,
+        poster: "/images/no-click-sherlock/dialogue-and-navigation-poster.jpg",
+      },
+      {
+        type: "image",
+        src: "/images/no-click-sherlock/evidence-dialogue-choice.jpg",
+        title: "Choices before the challenge",
+        caption:
+          "Dialogue presents a choice before the player enters the security challenge.",
+        width: 1920,
+        height: 1080,
+      },
+      {
+        type: "image",
+        src: "/images/no-click-sherlock/evidence-password-entry.jpg",
+        title: "Returning to password entry",
+        caption:
+          "The investigation interface returns to password entry after inspecting clues.",
+        width: 1360,
+        height: 768,
+      },
+      {
+        type: "video",
+        src: "/videos/no-click-sherlock/clue-investigation.mp4",
+        title: "Investigating profiles and clues",
+        caption: "Fictional profiles and clues in the final investigation.",
+        width: 854,
+        height: 482,
+        poster: "/images/no-click-sherlock/clue-investigation-poster.jpg",
+      },
+      {
+        type: "image",
+        src: "/images/no-click-sherlock/evidence-clue-investigation.jpg",
+        title: "Inspecting identity clues",
+        caption:
+          "The final investigation presents fictional staff profiles and collected identity clues.",
+        width: 1360,
+        height: 768,
+      },
+    ],
     title: "No Click, Sherlock",
     year: "2026",
     engine: "Unity",
@@ -308,10 +435,8 @@ export const projects: Project[] = [
     team: "6 people",
     roleLabel: "Lead programmer",
     language: "C#",
-    featuredOrder: 4,
-
+    featuredOrder: 5,
     hero: "/images/no-click-sherlock/image5.png",
-
     images: [
       "/images/no-click-sherlock/hero1.png",
       "/images/no-click-sherlock/image1.png",
@@ -326,7 +451,6 @@ export const projects: Project[] = [
       "/images/no-click-sherlock/image10.png",
       "/images/no-click-sherlock/image11.png",
     ],
-
     videos: [
       {
         type: "youtube",
@@ -334,22 +458,44 @@ export const projects: Project[] = [
         title: "No Click, Sherlock - team InfraRED",
       },
     ],
-
     contribution:
-      "Lead programming: dialogue, three minigames, UI and save systems.",
-
+      "Lead programming: dialogue, minigames, final investigation, UI/UX, animation integration and saves.",
     summary:
-      "A narrative cybersecurity game with three minigames shaped by the player’s dialogue choices.",
-
+      "A narrative cybersecurity game where dialogue choices affect two minigames and clues feed into a final account investigation.",
     brief:
-      "The game was developed in collaboration with the University of Groningen to help staff recognise common cybersecurity risks and scams. It had to work for both technical and non-technical players and be short enough to complete during a lunch break or at home.",
-
+      "Develop a short cybersecurity game with the University of Groningen for staff with different levels of gaming experience. The story and connected challenges introduce risks around exposed personal information.",
     development:
-      "The game connects a narrative hub to three mechanically different challenges. Players move through the world by clicking valid NavMesh positions, approach NPCs and make dialogue choices that are stored in a shared game state. Those choices can change later challenges, such as introducing moving platforms or increasing disruptive pop-ups. The minigames cover a procedural platform run, a block-placement puzzle with hidden fingerprint clues and a browser investigation where collected evidence is assembled into a password. Completing a challenge records progress, loads the correct scene and returns the player to the appropriate point in the story.",
-
-    role:
-      "As lead programmer, I handled the core Unity and C# implementation and managed the team’s GitHub workflow. I built the player movement, NPC interactions, dialogue flow, minigames, UI, animations, cutscenes, save system and scene transitions. My focus was keeping each mechanic understandable while connecting the player’s decisions to later gameplay.",
-
+      "The initial competitive phishing concept was broadened after research into staff concerns, including privacy and digital footprints. An early phone-voting prototype was dropped because its setup did not fit the final experience. We built a narrative hub, two minigames and a final investigation, then revised navigation and clue presentation through testing.",
+    role: "I led programming in a six-person team and managed the GitHub workflow. I implemented movement, dialogue, minigames, the final investigation, saves, scene transitions and UI. I also integrated team-created animations and contributed to level design. I divided programming work, handled complex integration tasks and helped keep the scope achievable.",
+    iterations: [
+      {
+        title: "Reducing setup and broadening the concept",
+        observation:
+          "The early concept concentrated on competitive phishing. A phone-voting prototype introduced additional network and device setup, while research identified wider concerns around privacy and exposed information.",
+        change:
+          "We dropped phone voting and developed a connected single-player story with security challenges and a final investigation.",
+        result:
+          "The delivered game uses one local gameplay flow. Dialogue choices affect later challenge behaviour, and collected clues connect the minigames to the investigation.",
+      },
+      {
+        title: "Showing players where to go next",
+        observation:
+          "Observational testing with university staff exposed differences in gaming familiarity. Some players wandered through the hub without finding the next challenge.",
+        change:
+          "We revised the map and guidance. I added a proximity-triggered destination highlight and connected conversations, scene transitions and clearer objective UI.",
+        result:
+          "The final hub gives a visible destination cue instead of relying only on players remembering instructions. Approximately 15 teaching and administrative staff tested before demo day.",
+      },
+      {
+        title: "Making clues and password entry understandable",
+        observation:
+          "Plain text did not make important clues obvious, and the original drag-and-drop password interaction did not suit every tester.",
+        change:
+          "I added highlighted clue tooltips and manual password entry alongside drag and drop. Revised feedback explains what was collected, what is missing and whether an entry is valid.",
+        result:
+          "The final investigation supports both input methods and makes clue discovery more explicit. These changes came from observed interaction problems rather than an assumption that all players would use the interface the same way.",
+      },
+    ],
     tags: [
       "Unity",
       "C#",
@@ -358,19 +504,17 @@ export const projects: Project[] = [
       "UI/UX",
       "Save systems",
     ],
-
     links: [
       {
         label: "GitHub",
         href: "https://github.com/Vladut-Andrei-Lambru/CyberSecurity-InfraRED",
       },
     ],
-
     systems: [
       {
         title: "Procedural security run",
         description:
-          "The first minigame is an automatically bouncing platform challenge. Climbing increases the player’s security percentage, while falling removes progress and returns the player to the last safe platform. Reaching full security starts a second phase where identification items must be collected. Items that will be used later on.",
+          "An automatically bouncing platform challenge generates platforms ahead of the player. Height increases security progress, falling returns the player to a safe platform, and reaching full security starts an identification-item phase.",
         details: [
           "CharacterController movement with one-way platforms",
           "Platforms generated ahead of the player and removed below the camera",
@@ -380,7 +524,7 @@ export const projects: Project[] = [
       {
         title: "Solvable block puzzle",
         description:
-          "The second minigame uses an 8×8 grid where players place block groups and clear complete rows or columns. Some blocks contain fingerprint clues, fingerprints that signify the staff's digital footprint such as RUG Staff page and social media.",
+          "Players place block groups on an 8x8 grid and clear complete rows or columns. Some blocks reveal fingerprint clues representing a staff member's exposed digital footprint.",
         details: [
           "Grid and occupied-cell validation",
           "Independent row and column clearing",
@@ -399,26 +543,13 @@ export const projects: Project[] = [
         ],
       },
     ],
-
-    challenge: {
-      problem:
-        "Three different minigames had to respond to earlier choices and return the player to the correct point in the narrative. Scene changes could not lose progress or replay the opening every time.",
-      decision:
-        "I stored dialogue outcomes in shared game state and used a save system to record completed minigames, the return spawn and pending story events before switching scenes.",
-      result:
-        "The final build connects NPC conversations, minigames, cutscenes and persistent progress into one playable flow. A dialogue decision can change later platforms or disruptive pop-ups.",
-    },
-
     outcome:
-      "The final build connects a narrative hub, NPC decisions, three minigames, cutscenes and persistent progress into one playable experience. Finishing a minigame records the result and returns the player to the correct point in the story.",
-
+      "Delivered two minigames and a connected final investigation with dialogue, cutscenes and saved progress. Testing with approximately 15 University of Groningen staff members informed navigation cues, clue tooltips and an additional password input method.",
     learning:
-      "This was my largest programming responsibility in a team project so far. It taught me how to separate a game into reusable systems, carry state between scenes and make very different minigames feel like parts of the same experience.",
-
+      "Testing with the intended audience exposed assumptions that our own gaming experience hid. Leading implementation also taught me to make integration milestones, task dependencies and blocked work visible earlier.",
     furtherWork:
-      "Further work would focus on testing interrupted scene transitions and saved-game recovery, and separating dialogue presentation from its state changes as the number of conversations grows.",
+      "I would record observations more consistently and run follow-up tests on navigation, password input and saved-game recovery. Evaluating what participants learn about cybersecurity would be a separate next step.",
   },
-
   {
     slug: "combat-progression",
     title: "Combat Progression",
@@ -429,9 +560,7 @@ export const projects: Project[] = [
     roleLabel: "Gameplay programmer",
     language: "C#",
     featuredOrder: 3,
-
     hero: "/images/combat-progression/hero.jpg",
-
     images: [
       "/images/combat-progression/hero.jpg",
       "/images/combat-progression/01-progression-hud.png",
@@ -439,7 +568,6 @@ export const projects: Project[] = [
       "/images/combat-progression/03-adrenaline-crit-choice.png",
       "/images/combat-progression/04-critical-hit.png",
     ],
-
     videos: [
       {
         type: "youtube",
@@ -457,22 +585,44 @@ export const projects: Project[] = [
         title: "Combat Progression - Weapons Upgrade Path",
       },
     ],
-
     contribution:
       "XP progression, upgrade selection, movement abilities, weapon upgrades, HUD feedback and enemy respawning.",
-
     summary:
       "A solo progression system built on Unity’s FPS Microgame. Defeating enemies earns XP and unlocks choices between movement abilities and weapon upgrades.",
-
     brief:
-      "For my programming focus track, I wanted to build a progression feature that worked within an existing game. I used Unity’s FPS Microgame as the foundation and added three ranks of upgrades, each offering a choice between mobility and shooting. My main learning goals were integrating with an unfamiliar codebase, separating responsibilities and making the system easier to expand.",
-
+      "Extend an existing FPS codebase with three ranks of upgrades. Each rank offers one movement choice and one shooting choice, giving players different ways to develop their combat abilities.",
     development:
-      "My research began with Assassin’s Creed Origins and the relationship between earning XP and unlocking abilities. I also looked at skill-point systems in Shadow of the Tomb Raider and Yakuza 0. Rather than implementing a full branching skill tree, I chose two cards at each rank so the player could make a quick decision during combat. Ghostrunner informed the dash and mobility upgrades, Titanfall 2 informed the double jump, and heat-based shooters and Borderlands informed weapon recovery and critical-hit feedback. I mapped the new, modified and reused classes in UML before connecting enemy deaths, progression, upgrade selection and gameplay effects. Iteration focused on input conflicts, ability timing and making each upgrade noticeable.",
-
-    role:
-      "I designed and implemented the progression system independently. My work covers XP rewards, rank definitions, the upgrade menu, ability components, weapon tuning, unlock tracking, HUD feedback and enemy respawning. I also extended the template’s player controller and projectile handling to connect those features to gameplay. Unity’s template supplied the original FPS foundation, enemy behaviours, environment and visual assets.",
-
+      "Research into XP and ability systems led to two cards per rank rather than a full skill tree. UML distinguished new, modified and reused classes. Iteration focused on menu input conflicts, jump and dash timing, and tuning the active runtime weapon.",
+    role: "I independently designed and implemented XP progression, rank data, upgrade selection, movement abilities, weapon tuning, HUD feedback and enemy respawning. I worked on UI/UX and level design and modified the template controller and projectile handling. Unity's FPS Microgame supplied the original FPS foundation and visual assets.",
+    iterations: [
+      {
+        title: "Making upgrade selection respond to input",
+        observation:
+          "The upgrade menu initially did not respond to mouse input because the template's pause UI was still active.",
+        change:
+          "I made sure only one UI system was active during selection and explicitly unlocked the cursor when opening the upgrade menu.",
+        result:
+          "The player can select a card and resume combat with its effect applied. The report documents the conflict and fix; consolidating pause ownership remains further work.",
+      },
+      {
+        title: "Preventing two jumps from firing together",
+        observation:
+          "The initial double-jump integration could trigger the ground jump and extra jump together. Dash also needed controlled timing without overlapping movement.",
+        change:
+          "I separated the jump method, gated the extra jump on the airborne state and reset it on landing. Dash uses the existing input route and stops a previous dash before starting another.",
+        result:
+          "The revised logic distinguishes the first jump from the mid-air jump and prevents overlapping dash routines. These changes are documented in the development report.",
+      },
+      {
+        title: "Making weapon upgrades noticeable",
+        observation:
+          "The first cooling adjustments barely changed how the weapon felt during gameplay.",
+        change:
+          "I tested different tuning values and increased the changes until the cooling upgrade was noticeable. The effect is applied to the active runtime weapon instance.",
+        result:
+          "The weapon-path video shows the resulting upgrade behaviour. The report explains how the tuning changed from the initial values.",
+      },
+    ],
     tags: [
       "Unity",
       "C#",
@@ -480,8 +630,7 @@ export const projects: Project[] = [
       "ScriptableObjects",
       "Technical design",
     ],
-
-        links: [
+    links: [
       {
         label: "GitHub",
         href: "https://github.com/Vladut-Andrei-Lambru/FocusTrack",
@@ -518,7 +667,6 @@ export const projects: Project[] = [
         },
       ],
     },
-
     systems: [
       {
         title: "XP and rank progression",
@@ -543,61 +691,82 @@ export const projects: Project[] = [
         ],
       },
       {
-        title: "Movement abilities",
+        title: "Gameplay effects and combat feedback",
         description:
-          "The movement choices change how the player navigates combat. Dash provides a short burst for repositioning, Double Jump adds a mid-air jump, and Adrenaline Rush temporarily increases movement speed after a kill.",
+          "Separate components implement dash, double jump and a kill-triggered speed boost. Weapon tuning changes recovery values on the active instance; critical damage emits an event for HUD feedback. A scene-level respawn manager replaces defeated enemies.",
         details: [
-          "Directional dash with cooldown and camera feedback",
-          "Mid-air jump availability resets on landing",
-          "Additional kills refresh the Adrenaline Rush duration",
-          "Ability components work with the existing player controller",
-        ],
-      },
-      {
-        title: "Weapon recovery and critical hits",
-        description:
-          "The shooting choices improve weapon cooling and recovery across two tiers, then introduce a chance of critical damage. Weapon tuning targets the active runtime weapon, while critical-hit handling connects projectile damage to visible HUD feedback.",
-        details: [
-          "Overheat I improves weapon recovery rate",
-          "Overheat II also reduces the delay before recovery",
-          "Critical Protocol enables a 10% critical-hit chance",
-          "A CRIT! message makes critical hits visible to the player",
-        ],
-      },
-      {
-        title: "Enemy replacement and combat pressure",
-        description:
-          "Enemy deaths request replacements from a scene-level respawn manager. The manager handles delayed spawning and samples NavMesh positions, keeping the combat loop available as the player earns upgrades.",
-        details: [
-          "Separate replacement types for hover bots and turrets",
-          "Configurable spawn radius and minimum player distance",
-          "Higher replacement count after a configured kill threshold",
-          "Respawn timing survives destruction of the defeated enemy",
+          "Cooldowns and landing checks control movement abilities",
+          "Weapon tiers start from captured base values",
+          "Critical Protocol enables a 10% chance of five-times damage",
+          "Replacement spawning uses delayed requests and NavMesh positions",
         ],
       },
     ],
-
-    challenge: {
-      problem:
-        "The template already managed player input, cursor locking, pause behaviour and runtime weapon instances. My upgrade menu initially conflicted with the existing UI, and weapon changes needed to affect the instance the player was actually using.",
-      decision:
-        "I temporarily disabled the conflicting in-game menu while upgrade selection was active, explicitly handled pause and cursor state, and connected ability components to the existing controller. Weapon tuning resolves the active weapon through the template’s weapons manager.",
-      result:
-        "Combat, XP rewards, upgrade selection and immediate gameplay effects became one connected loop. The feature builds on the template’s existing systems while keeping progression and individual abilities in separate components.",
-    },
-
     outcome:
-      "The finished prototype supports three rounds of movement-versus-shooting choices. Players can focus on mobility, weapon recovery and critical damage, or combine choices from both paths. The showcase demonstrates separate movement and shooting runs, including the menus, unlocked abilities and combat feedback.",
-
+      "The prototype supports three upgrade choices, including dash, double jump, a kill-triggered speed boost, weapon recovery and critical damage. The videos demonstrate separate movement and weapon paths.",
     learning:
-      "This project helped me move beyond adding mechanics in isolation. I learned to trace the existing input, UI, movement and weapon systems before extending them, and to use events and ScriptableObject data to keep responsibilities clearer. The hardest work was often at the connection between systems: cursor focus, jump timing and selecting the correct weapon instance.",
-
+      "Integration required tracing the template's input, pause, movement and weapon lifecycle. Events and ScriptableObject data helped separate progression, presentation and gameplay effects.",
     furtherWork:
       "My next steps would be to queue upgrade selections when one XP reward crosses several levels, consolidate pause handling and improve the interfaces between the progression feature and template code. I would also expand testing around ability timing, repeated unlocks and spawn validation.",
   },
-
   {
     slug: "makers-fair",
+    evidence: [
+      {
+        type: "image",
+        src: "/images/makers-fair/evidence-early-plank-prototype.png",
+        title: "Early plank assembly",
+        caption:
+          "Early plank assembly prototype in the Unity editor, before the final level presentation.",
+        width: 2533,
+        height: 1310,
+      },
+      {
+        type: "image",
+        src: "/images/makers-fair/evidence-nailing-feedback.png",
+        title: "Hammer and nail feedback",
+        caption: "Hammer and nail interaction on player-positioned planks.",
+        width: 2551,
+        height: 1373,
+      },
+      {
+        type: "video",
+        src: "/videos/makers-fair/wheel-placement-prototype.mp4",
+        title: "Wheel placement in motion",
+        caption:
+          "Wheel placement and attachment preview in a Unity editor development recording.",
+        width: 764,
+        height: 438,
+        poster: "/images/makers-fair/wheel-placement-prototype-poster.jpg",
+      },
+      {
+        type: "image",
+        src: "/images/makers-fair/evidence-wheel-placement.png",
+        title: "Wheel attachment preview",
+        caption:
+          "A nearby wheel attachment point displays a placement preview.",
+        width: 2552,
+        height: 1243,
+      },
+      {
+        type: "video",
+        src: "/videos/makers-fair/bridge-failure-prototype.mp4",
+        title: "Bridge failure prototype",
+        caption:
+          "Bridge-test prototype and failure response. Development recording, not a full final playthrough.",
+        width: 854,
+        height: 480,
+        poster: "/images/makers-fair/bridge-failure-prototype-poster.jpg",
+      },
+      {
+        type: "image",
+        src: "/images/makers-fair/evidence-cart-manipulation.jpg",
+        title: "Moving the connected cart",
+        caption: "A connected cart manipulated during development testing.",
+        width: 764,
+        height: 438,
+      },
+    ],
     title: "Maker’s Fair",
     year: "2025",
     engine: "Unity VR · Meta Quest 3",
@@ -606,9 +775,7 @@ export const projects: Project[] = [
     roleLabel: "Lead programmer",
     language: "C#",
     featuredOrder: 6,
-
     hero: "/images/makers-fair/02.png",
-
     images: [
       "/images/makers-fair/hero.jpg",
       "/images/makers-fair/01.jpg",
@@ -616,7 +783,6 @@ export const projects: Project[] = [
       "/images/makers-fair/03.png",
       "/images/makers-fair/04.png",
     ],
-
     videos: [
       {
         type: "youtube",
@@ -629,22 +795,44 @@ export const projects: Project[] = [
         title: "Maker's Fair part 2",
       },
     ],
-
     contribution:
       "Lead programming: construction physics, player guidance and the bridge challenge.",
-
     summary:
       "A VR construction game where the player builds a cart from planks, nails and wheels, then tests it against a bridge's weight limit.",
-
     brief:
-      "Maker's Fair is set thirty years in the future, after automated systems have made everyday craft skills almost disappear. Woodworking and metalworking are no longer passed down because people rarely need to make or repair anything themselves. A group of older makers organises a fair to put those skills back into people's hands. The full idea included several craft areas, but within eight weeks we chose to complete one woodworking game rather than build several shallow demonstrations.",
-
+      "Build a VR construction experience where players assemble a cart from planks, nails and wheels, then cross a bridge without exceeding its weight limit.",
     development:
-      "The player receives planks, wheels, nails and a hammer and has to construct a cart that can cross a bridge. Our first prototype deliberately gave very little instruction because we wanted the freedom of building with LEGO. Testing showed that players enjoyed experimenting but could not tell what the game understood. We kept the open construction and added blueprints plus contextual holograms, such as showing a possible wheel position when one is picked up. Once the building interaction worked, we added a reason to make deliberate choices: every component has weight and the finished cart must stay below the bridge's load limit. The final challenge therefore tests both whether the cart holds together and whether the player built efficiently.",
-
-    role:
-      "I was the lead programmer and built the construction mechanics, level flow, guidance and UI/UX. I also worked on the level design and final bridge challenge. I did not create the art assets; the project was made by a five-person team.",
-
+      "The team moved from an AI detective concept to a hands-on woodworking experience, then narrowed the scope to one cart-building challenge. I prototyped grabbing and nailing, removed fixed plank sockets to allow player placement, and used guided wheel attachment points to keep assembly manageable.",
+    role: "I led programming for construction mechanics, UI/UX, level flow and the bridge challenge, and contributed to level design. I integrated team art and modified existing menu functionality. My focus was connecting the construction prototype to a playable cart-building goal.",
+    iterations: [
+      {
+        title: "Opening up plank placement",
+        observation:
+          "The early nailing prototype used fixed plank sockets, which limited how players could assemble their construction.",
+        change:
+          "I removed those plank sockets so players could position and nail planks themselves. Wheels retained predefined attachment points with nearby placement previews.",
+        result:
+          "Plank layout is player-directed, while wheel attachment stays constrained. This balances construction freedom with a clearer assembly interaction.",
+      },
+      {
+        title: "Controlling physics during VR grabbing",
+        observation:
+          "Early connected parts wobbled or separated as joints responded to rapid hand movement.",
+        change:
+          "During a grab, connected followers become kinematic and track a leader. Releasing the group restores dynamic bodies and rebuilds its joints.",
+        result:
+          "The cart can be manipulated as a connected group. The tradeoff is reduced physical simulation while grabbed; larger groups and repeated grab/release cycles still need testing.",
+      },
+      {
+        title: "Giving construction a clear final test",
+        observation:
+          "The broader crafting concept needed a concrete goal within the time available.",
+        change:
+          "We focused on building a cart and sending it across a bridge. The challenge totals construction mass and uses a configured weight limit to decide the result.",
+        result:
+          "The prototype connects assembly to a pass-or-fail bridge challenge. Limited time for final testing left stability and guidance as priorities for further work.",
+      },
+    ],
     tags: [
       "Unity",
       "C#",
@@ -652,66 +840,51 @@ export const projects: Project[] = [
       "XR Interaction Toolkit",
       "Technical design",
     ],
-
     links: [
       {
         label: "GitHub",
         href: "https://github.com/Vladut-Andrei-Lambru/Makers-Fair",
       },
     ],
-
     systems: [
       {
-        title: "Building without fixed recipes",
+        title: "Free plank placement with guided wheel attachment",
         description:
-          "The player can position planks, hammer nails and attach wheels instead of selecting a finished cart. The system keeps connected parts together while still allowing the object to react to gravity and player movement.",
+          "Players position planks and hammer nails to form connected groups. Wheels attach at predefined locations; a nearby valid socket displays a placement preview before snapping the wheel into place.",
         details: [
+          "Player-positioned planks and nail validation",
           "Runtime construction groups",
-          "Hammer and nail validation",
-          "Player-positioned parts",
+          "Proximity-based wheel placement previews",
         ],
       },
       {
-        title: "Making experimentation understandable",
+        title: "Controlled group manipulation",
         description:
-          "The first version gave almost no guidance because we wanted to give players freedom, like building with LEGO. Playtests showed that this was too vague, so we added blueprints and contextual holograms—for example, picking up a wheel reveals a possible attachment point.",
+          "While grabbed, a leader drives connected kinematic followers using stored local positions and rotations. Release restores dynamic physics and rebuilds the group's joints, allowing the assembled cart to respond to the scene.",
         details: [
-          "Feedback added after playtesting",
-          "Contextual placement holograms",
-          "Guidance without removing free building",
+          "Leader and follower transform offsets",
+          "Kinematic bodies during grabbing",
+          "Dynamic bodies and joints after release",
         ],
       },
       {
-        title: "Stable plank connections",
+        title: "Materials, bridge challenge and results",
         description:
-          "Joining several player-positioned planks into one physics object was the hardest problem. Early carts separated or became unstable as gravity, wheels and new parts affected the joints. I repeatedly adjusted how groups merge and when objects behave physically until the cart could survive the final test.",
+          "Material dispensers replenish parts after grabbing. The final challenge sums construction mass and compares it with the bridge limit; a stored result carries the outcome into the results flow.",
         details: [
-          "Dynamic group merging",
-          "Controlled physics-state changes",
-          "Repeated stress testing",
+          "Delayed material replenishment with visual feedback",
+          "Construction mass determines the bridge outcome",
+          "Result retained between scenes",
         ],
       },
     ],
-
-    challenge: {
-      problem:
-        "Connected planks became unstable when players grabbed and moved the construction quickly. The VR grab movement and joint constraints could pull the same parts in conflicting directions.",
-      decision:
-        "While grabbed, one plank leads and the other group members become kinematic followers. On release, they return to dynamic bodies and their joints are rebuilt. Groups merge as new parts are connected.",
-      result:
-        "This approach made manipulation more manageable within the finished woodworking level and supported the cart-building and bridge-test loop. It deliberately trades fully physical behaviour during grabbing for control.",
-    },
-
     outcome:
-      "Every plank, wheel and nail contributes weight. The cart must stay below the bridge's weight limit and remain intact long enough to cross. That constraint turned an open construction toy into a clear final challenge.",
-
+      "Delivered a VR woodworking prototype with player-positioned planks, guided wheel attachment and a final bridge weight challenge. Final testing was limited, so the project demonstrates the construction approach rather than comprehensive stability validation.",
     learning:
-      "Open-ended building needs readable feedback, especially in VR. The project also taught me that stable physics often comes from carefully controlling when connected objects are simulated, not simply increasing joint strength.",
-
+      "VR construction required explicit control over when physics acts on connected parts. I also learned to integrate team assets earlier and reserve time for headset testing instead of leaving integration and validation until the end.",
     furtherWork:
-      "For larger constructions, the all-pairs joint setup would need revisiting. Connecting only adjacent parts and testing repeated grab/release cycles would reduce unnecessary constraints and expose stability limits.",
+      "I would first test repeated grabbing, release and wheel attachment with representative users. For larger constructions, connecting adjacent parts instead of all pairs would reduce unnecessary constraints and make stability limits easier to investigate.",
   },
-
   {
     slug: "time-rewind",
     title: "Time Rewind",
@@ -721,10 +894,8 @@ export const projects: Project[] = [
     team: "Solo project",
     roleLabel: "Gameplay programmer",
     language: "C++ and Blueprints",
-    featuredOrder: 5,
-
+    featuredOrder: 4,
     hero: "/images/time-rewind/hero.jpg",
-
     images: [
       "/images/time-rewind/hero.jpg",
       "/images/time-rewind/01-player-mode.png",
@@ -732,22 +903,44 @@ export const projects: Project[] = [
       "/images/time-rewind/03-platform-traversal.png",
       "/images/time-rewind/04-laser-plate.png",
     ],
-
     contribution:
-      "C++ rewind component, Blueprint puzzle logic, cube interactions, mode selection, UI feedback and gameplay testing.",
-
+      "C++ recording and playback, Blueprint puzzles, mode selection, UI, level design and testing.",
     summary:
       "A solo Unreal puzzle prototype where players reverse recorded movement to recover a cube, restore fallen platforms and manipulate laser barriers.",
-
     brief:
-      "For my Unreal elective, I developed a reusable time-rewind mechanic and built a puzzle level around it. The first version demonstrated recording and reversing movement, but feedback showed that the mechanic needed a stronger purpose in gameplay. I expanded the prototype into a connected course where the player uses a cube, platforms and pressure plates to solve problems through rewind. Unreal's third-person template provided the starting point.",
-
+      "Turn a reusable rewind mechanic into a puzzle tool. Players reverse recorded movement to recover a cube, restore fallen platforms and use the cube's previous route to control laser barriers.",
     development:
-      "The level introduces the cube through pickup, throwing and a button-operated sliding door. Opening the first door unlocks Platforms mode, which lets the player restore fallen platforms and cross the next section. The final room uses pressure plates linked to laser barriers: the player must think about the cube's previous route and rewind it onto another plate to continue. I added world-space instructions, mode text, a history bar, rewind trails and interaction sounds after testing showed that the available actions and puzzle solutions needed clearer feedback.",
-
-    role:
-      "I developed the project independently, using C++ for the reusable recording and playback component and Blueprints for puzzle interactions, mode selection, UI, audio and level behaviour. My work included cube pickup and throwing, buttons and sliding doors, platform rewind, pressure plates, laser barriers and the feedback connecting these systems. I also documented technical tests and observed three testers playing the level. The project builds on Unreal template assets rather than custom artwork.",
-
+      "The first version demonstrated rewind but needed a gameplay purpose. I connected it to a door, platform section and laser room. Playtesting exposed pickup conflicts and unclear mode unlocks, leading to cooldowns, history resets, world-space hints and stronger feedback.",
+    role: "I built the reusable C++ rewind component and its Blueprint integration, then designed the puzzle level and implemented cube interactions, doors, platforms, plates and lasers. I also developed UI and feedback and documented technical tests and three playtesters. Unreal's third-person template provided the starting assets.",
+    iterations: [
+      {
+        title: "From a mechanic demo to a puzzle course",
+        observation:
+          "Feedback on the first version showed that reversing movement needed a stronger gameplay purpose.",
+        change:
+          "I added a cube-operated door, falling platforms and a laser puzzle that uses the cube's recorded path. Platforms mode unlocks when the first door opens.",
+        result:
+          "Rewind is needed to recover the cube, restore a crossing and move the cube between pressure plates. The level gives the reusable C++ component a concrete gameplay role.",
+      },
+      {
+        title: "Fixing pickup and stale-history conflicts",
+        observation:
+          "Tests found immediate cube recollection after a throw, pickup during rewind and playback returning to frames from an earlier throw.",
+        change:
+          "I added a short pickup cooldown, blocked pickup while the cube is rewinding and cleared history on a new throw.",
+        result:
+          "Test cases T9 and T10 changed from Fail to Pass on retest; T11 changed from Partial Pass to Pass. The linked test plan records the original failures and fixes.",
+      },
+      {
+        title: "Explaining mode unlocks and the final puzzle",
+        observation:
+          "Two of the three testers needed extra hints before changes: Platforms mode was easy to miss, and the final room did not explain why the cube's previous route mattered.",
+        change:
+          "I added world-space platform and laser-room hints, clarified the mode-aware history bar and improved interaction feedback.",
+        result:
+          "The third tester completed the level after the extra hints were added. This is a small qualitative playtest; empty-history messaging and rapid-input UI flicker remain limitations.",
+      },
+    ],
     tags: [
       "Unreal Engine",
       "C++",
@@ -756,7 +949,6 @@ export const projects: Project[] = [
       "Puzzle design",
       "User testing",
     ],
-
     links: [
       {
         label: "GitHub",
@@ -767,14 +959,12 @@ export const projects: Project[] = [
         href: "/files/time-rewind-test-plan.pdf",
       },
     ],
-
     documentation: {
       report: "/files/time-rewind-test-plan.pdf",
       summary:
         "The test plan documents 25 technical and gameplay test cases, initial failures, fixes, retest results and observations from three playtesters. It covers rewind behaviour, cube interactions, mode filtering, doors, platforms, laser puzzles, UI, audio and remaining limitations.",
       diagrams: [],
     },
-
     systems: [
       {
         title: "Reusable recording and reverse playback",
@@ -785,17 +975,6 @@ export const projects: Project[] = [
           "Configurable recording interval and history capacity",
           "Consumed snapshots removed during playback",
           "Playback stops when the stored history is exhausted",
-        ],
-      },
-      {
-        title: "Rewind modes and progression",
-        description:
-          "The player holds R to rewind and presses Q to change the target mode. Actor tags filter which objects respond to All, Player, Cube or Platforms mode. Platforms mode becomes available after the first door opens, introducing environmental rewind when the level first requires it.",
-        details: [
-          "Actor-tag filtering for selected rewind targets",
-          "Platforms mode unlocked through level progression",
-          "HUD text identifies the selected mode",
-          "History bar reads the selected rewind mode",
         ],
       },
       {
@@ -811,42 +990,6 @@ export const projects: Project[] = [
         ],
       },
       {
-        title: "Doors and platform traversal",
-        description:
-          "A cube-operated button opens a linked double door using Timeline-driven movement. The next section introduces falling platforms that the player must rewind into position to cross. I adjusted platform rewind settings and added a world-space hint after testers missed the newly unlocked mode.",
-        details: [
-          "Button validates the cube through its actor tag",
-          "Timeline and interpolation control sliding-door movement",
-          "Button and door sounds confirm activation",
-          "Platform actors use the shared rewind component",
-          "World-space instructions explain the mode change",
-        ],
-      },
-      {
-        title: "Laser puzzles built around the cube's path",
-        description:
-          "Pressure plates control the visibility and collision of linked laser barriers. The final puzzle requires the player to use the cube's recorded route: after passing one barrier, rewinding the cube moves it onto another plate. I adjusted plate placement around the actual recorded path so the solution could be achieved consistently.",
-        details: [
-          "Active laser collision blocks the player",
-          "Pressure plates enable and disable linked barriers",
-          "Laser visuals and collision change together",
-          "The cube's recorded route forms part of the solution",
-          "A room hint explains why the previous path matters",
-        ],
-      },
-      {
-        title: "Blueprint presentation and feedback",
-        description:
-          "The C++ component exposes playback controls and start/stop events to Blueprints. Blueprint logic handles puzzle responses, UI, sounds and visual effects. This lets the core recording component remain reusable while each interaction supplies its own feedback.",
-        details: [
-          "Blueprint-callable start, stop and history-clearing functions",
-          "Blueprint events for rewind transitions",
-          "Niagara trail indicates active rewind",
-          "Mode text, history bar and world-space puzzle hints",
-          "Reference validation before door and laser calls",
-        ],
-      },
-      {
         title: "Technical testing and player feedback",
         description:
           "I documented 25 test cases covering the mechanic and its use throughout the level. Tests included physics restoration, empty history, rapid input, cube pickup, mode filtering, puzzle completion and missing references. Three testers also played without being given the full solution. Their confusion around Platforms mode and the final laser room led to additional hints and stronger feedback.",
@@ -859,33 +1002,18 @@ export const projects: Project[] = [
         ],
       },
     ],
-
-    challenge: {
-      problem:
-        "The recording system worked in isolation, but the first version did not give players enough reasons to use it. Once puzzles were added, cube pickup could interrupt rewind, old history could send the cube to an earlier position, and testers did not always understand when to change modes.",
-      decision:
-        "I made the cube's recorded path part of the puzzle solution, added environmental rewind through the platform section and tested the complete level flow. Pickup cooldowns, rewind-state checks and history clearing addressed interaction conflicts. World-space hints, mode-aware UI and audio made the intended actions clearer.",
-      result:
-        "The prototype became a connected puzzle course where rewind is needed to recover objects, restore a route and control laser barriers. The test plan records the fixes and successful retests, while retaining the remaining limitations around empty-history feedback, rapid-input UI behaviour and player guidance.",
-    },
-
     outcome:
-      "The finished prototype connects cube throwing, a sliding door, falling platforms and laser barriers into a playable course. The test plan documents 25 cases and three playtesters, including changes made after failures and confusing moments. The final laser puzzle uses the cube's previous movement as part of its solution, giving the recording system a direct role in gameplay.",
-
+      "Delivered a connected puzzle course and documented 25 technical and gameplay test cases. Three playtesters informed changes to guidance and feedback; empty-history messaging and rapid-input UI behaviour remain areas to improve.",
     learning:
-      "The biggest lesson was that a working technical feature still needs a clear gameplay purpose. Building the level exposed problems that an isolated rewind test did not reveal, especially pickup timing, old cube history and unclear mode unlocks. Separating the C++ recording component from Blueprint puzzle logic made iteration easier, while observing players helped me identify where the mechanic needed explanation and feedback.",
-
+      "A technically working feature still needs a reason to use it. Building the whole level exposed interaction conflicts that isolated playback tests missed, while player observations revealed where the mechanic needed explanation.",
     furtherWork:
       "I would first improve feedback when no rewind history is available and reduce UI flicker during rapid mode changes. For a larger level, I would investigate recording only moving actors, compressing snapshot data and using an adaptive recording rate. I would retain the recorded-path behaviour that the cube puzzles rely on and test any optimisation against those solutions.",
   },
 ];
 
-export const orderedProjects = [...projects].sort((a, b) => {
-  const aOrder = a.featuredOrder ?? Number.POSITIVE_INFINITY;
-  const bOrder = b.featuredOrder ?? Number.POSITIVE_INFINITY;
-
-  return aOrder - bOrder;
-});
+export const orderedProjects = [...projects].sort(
+  (a, b) => (a.featuredOrder ?? Infinity) - (b.featuredOrder ?? Infinity),
+);
 
 export function getProject(slug: string) {
   return projects.find((project) => project.slug === slug);

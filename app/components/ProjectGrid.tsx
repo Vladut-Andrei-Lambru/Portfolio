@@ -58,7 +58,7 @@ export default function ProjectGrid({ projects }: Props) {
           disabled={active === 0}
           onClick={() => move(-1)}
         >
-          ←
+          Previous
         </button>
         <button
           type="button"
@@ -66,7 +66,7 @@ export default function ProjectGrid({ projects }: Props) {
           disabled={active >= projects.length - 1}
           onClick={() => move(1)}
         >
-          →
+          Next
         </button>
       </div>
       <div
@@ -116,7 +116,7 @@ export default function ProjectGrid({ projects }: Props) {
                 {project.tags.slice(0, 3).join(" · ")}
               </p>
               <Link className="case-link" href={`/projects/${project.slug}`}>
-                Project breakdown <span>↗</span>
+                Project breakdown
               </Link>
             </div>
           </article>

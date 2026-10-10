@@ -101,7 +101,7 @@ export default function Home() {
             target="_blank"
             rel="noreferrer"
           >
-            Résumé
+            CV
           </a>
         </div>
       </header>
@@ -113,12 +113,12 @@ export default function Home() {
           </p>
           <h1>
             Gameplay Programmer
-            <span>Technical Game Designer · Unity & C#</span>
+            <span>Technical Game Designer | Unity and Unreal</span>
           </h1>
           <p className="hero-intro">
-            I build gameplay systems in Unity and C#, including movement, physics,
-            player interactions and game flow. I’m a third-year CMGT student at
-            Hanze University, currently on exchange at SeoulTech.
+            I lead programming in student teams and build movement, physics,
+            interactions and progression systems using Unity, C# and Unreal
+            Engine.
           </p>
           <div className="hero-actions">
             <a className="button primary" href="#work">
@@ -130,7 +130,7 @@ export default function Home() {
               target="_blank"
               rel="noreferrer"
             >
-              Résumé ↗
+              Download CV
             </a>
           </div>
           <div className="hero-links">
@@ -192,16 +192,15 @@ export default function Home() {
         <div className="about-grid">
           <div className="about-copy enter">
             <p>
-              I focus on gameplay programming and technical design, mainly using
-              Unity and C#. My work includes player movement, interactions,
-              cameras and the systems that connect individual mechanics into a
-              complete game.
+              I am a third-year CMGT student at Hanze, currently on exchange at
+              SeoulTech. My projects combine gameplay programming with UI/UX,
+              animation integration and level design.
             </p>
             <p>
-              In team projects, I work on implementation and help refine the
-              game flow through testing. I’m looking for an internship where I
-              can contribute to gameplay development and learn from an
-              experienced team.
+              As lead programmer, I divide work so teammates can own meaningful
+              features, take on complex systems, help teammates new to Git and
+              keep the scope achievable. I also build solo projects in Unity and
+              Unreal and use playtesting to refine interactions and guidance.
             </p>
           </div>
           <div className="toolbox enter delay-one">
@@ -209,11 +208,11 @@ export default function Home() {
             <dl>
               <div>
                 <dt>Main tools</dt>
-                <dd>Unity · C# · Git</dd>
+                <dd>Unity | C# | Git</dd>
               </div>
               <div>
                 <dt>Used in projects</dt>
-                <dd>VR/XR · Meta Quest 3 · Unreal Engine · Blueprints</dd>
+                <dd>Unreal Engine | C++ | Blueprints | VR/XR</dd>
               </div>
               <div>
                 <dt>Focus</dt>
@@ -224,7 +223,7 @@ export default function Home() {
               </div>
               <div>
                 <dt>Learning</dt>
-                <dd>Architecture · Tools programming · C++</dd>
+                <dd>Architecture | Tools programming</dd>
               </div>
             </dl>
           </div>
@@ -331,7 +330,7 @@ export default function Home() {
             target="_blank"
             rel="noreferrer"
           >
-            Résumé ↗
+            Download CV
           </a>
         </div>
         <p className="footer-note">

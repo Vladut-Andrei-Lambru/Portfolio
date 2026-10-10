@@ -24,12 +24,11 @@ export const metadata: Metadata = {
   title: "Vladut-Andrei Lambru | Gameplay Programming & Technical Design",
 
   description:
-    "Gameplay mechanics, game flow and technical design portfolio by CMGT student Vladut-Andrei Lambru. Built with Unity and C#.",
+    "Gameplay mechanics, game flow and technical design portfolio by CMGT student Vladut-Andrei Lambru. Unity, C#, Unreal Engine, C++ and Blueprints.",
 
   openGraph: {
     title: "Vladut-Andrei Lambru | Gameplay Programming & Technical Design",
-    description:
-      "Gameplay programming and technical game design portfolio.",
+    description: "Gameplay programming and technical game design portfolio.",
     url: "https://vladut-andrei-lambru.github.io/",
     siteName: "Vlad Lambru Portfolio",
     images: [

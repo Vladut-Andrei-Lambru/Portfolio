@@ -137,6 +137,33 @@ transform.rotation = camRot;`,
       source:
         "https://github.com/Vladut-Andrei-Lambru/VRLifeSupport-Block2/blob/2e1e0f20853f28989bb3d6b2ece509b7d9718d1b/Assets/Scripts/CPR/CprChestController.cs#L93-L117",
     },
+    {
+      title: "Arming a two-hand gesture before activation",
+      code: `// Arm the gesture only after holding stop pose briefly (reduces false triggers)
+if (stopPose)
+    _armTimer += Time.deltaTime;
+else
+    _armTimer = 0f;
+
+bool armed = _armTimer >= armHoldSeconds;
+if (!armed)
+    return;
+
+// Push trigger: both hands forward fast, OR average is fast (configurable)
+bool bothPush = leftForwardSpeed > pushSpeed && rightForwardSpeed > pushSpeed;
+bool avgPush = allowAverageSpeedTrigger && avgForwardSpeed > pushSpeed;
+
+if (bothPush || avgPush)
+{
+    _cooldown = cooldownSeconds;
+    _armTimer = 0f;
+    onStopAndPush?.Invoke();
+}`,
+      source:
+        "https://github.com/Vladut-Andrei-Lambru/VRLifeSupport-Block2/blob/2e1e0f20853f28989bb3d6b2ece509b7d9718d1b/Assets/Scripts/Hand%20Gesture/TwoHandPush.cs#L124-L143",
+      explanation:
+        "The validated stop pose must be held for the configured duration before a push can activate. Detection then accepts either both hands exceeding the forward-speed threshold or, when enabled, their average speed. Activation emits an event and starts a cooldown, so scene responses can be configured separately.",
+    },
   ],
 
   "makers-fair": [
@@ -390,7 +417,7 @@ w.AmmoReloadDelay = Mathf.Max(minReloadDelay, w.AmmoReloadDelay);`,
         "https://github.com/Vladut-Andrei-Lambru/FocusTrack/blob/eabf0dee4014c9378804d7974c6d414a9f7e4926/Assets/FPS/Scripts/Progression/CritProvider.cs#L35-L46",
     },
   ],
-    "time-rewind": [
+  "time-rewind": [
     {
       title: "Recording transform and physics state",
       code: `USTRUCT(BlueprintType)
