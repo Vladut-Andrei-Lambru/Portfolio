@@ -12,7 +12,7 @@ export type Project = {
   engine: string;
   duration: string;
   team: string;
-  featuredOrder?: 1 | 2 | 3 | 4 | 5;
+  featuredOrder?: 1 | 2 | 3 | 4 | 5 | 6;
   hero: string;
   images: string[];
   videos?: ProjectVideo[];
@@ -308,7 +308,7 @@ export const projects: Project[] = [
     team: "6 people",
     roleLabel: "Lead programmer",
     language: "C#",
-    featuredOrder: 3,
+    featuredOrder: 4,
 
     hero: "/images/no-click-sherlock/image5.png",
 
@@ -428,7 +428,7 @@ export const projects: Project[] = [
     team: "Solo project",
     roleLabel: "Gameplay programmer",
     language: "C#",
-    featuredOrder: 4,
+    featuredOrder: 3,
 
     hero: "/images/combat-progression/hero.jpg",
 
@@ -495,7 +495,6 @@ export const projects: Project[] = [
         href: "/files/Ft-GameProgrammingBuild_Vladut-Andrei_Lambru-487791.zip",
       },
     ],
-
     documentation: {
       report: "/files/combat-progression-report.pdf",
       summary:
@@ -606,7 +605,7 @@ export const projects: Project[] = [
     team: "5 people",
     roleLabel: "Lead programmer",
     language: "C#",
-    featuredOrder: 5,
+    featuredOrder: 6,
 
     hero: "/images/makers-fair/02.png",
 
@@ -711,6 +710,173 @@ export const projects: Project[] = [
 
     furtherWork:
       "For larger constructions, the all-pairs joint setup would need revisiting. Connecting only adjacent parts and testing repeated grab/release cycles would reduce unnecessary constraints and expose stability limits.",
+  },
+
+  {
+    slug: "time-rewind",
+    title: "Time Rewind",
+    year: "2026",
+    engine: "Unreal Engine 5.7",
+    duration: "Unreal elective",
+    team: "Solo project",
+    roleLabel: "Gameplay programmer",
+    language: "C++ and Blueprints",
+    featuredOrder: 5,
+
+    hero: "/images/time-rewind/hero.jpg",
+
+    images: [
+      "/images/time-rewind/hero.jpg",
+      "/images/time-rewind/01-player-mode.png",
+      "/images/time-rewind/02-cube-retrieval.png",
+      "/images/time-rewind/03-platform-traversal.png",
+      "/images/time-rewind/04-laser-plate.png",
+    ],
+
+    contribution:
+      "C++ rewind component, Blueprint puzzle logic, cube interactions, mode selection, UI feedback and gameplay testing.",
+
+    summary:
+      "A solo Unreal puzzle prototype where players reverse recorded movement to recover a cube, restore fallen platforms and manipulate laser barriers.",
+
+    brief:
+      "For my Unreal elective, I developed a reusable time-rewind mechanic and built a puzzle level around it. The first version demonstrated recording and reversing movement, but feedback showed that the mechanic needed a stronger purpose in gameplay. I expanded the prototype into a connected course where the player uses a cube, platforms and pressure plates to solve problems through rewind. Unreal's third-person template provided the starting point.",
+
+    development:
+      "The level introduces the cube through pickup, throwing and a button-operated sliding door. Opening the first door unlocks Platforms mode, which lets the player restore fallen platforms and cross the next section. The final room uses pressure plates linked to laser barriers: the player must think about the cube's previous route and rewind it onto another plate to continue. I added world-space instructions, mode text, a history bar, rewind trails and interaction sounds after testing showed that the available actions and puzzle solutions needed clearer feedback.",
+
+    role:
+      "I developed the project independently, using C++ for the reusable recording and playback component and Blueprints for puzzle interactions, mode selection, UI, audio and level behaviour. My work included cube pickup and throwing, buttons and sliding doors, platform rewind, pressure plates, laser barriers and the feedback connecting these systems. I also documented technical tests and observed three testers playing the level. The project builds on Unreal template assets rather than custom artwork.",
+
+    tags: [
+      "Unreal Engine",
+      "C++",
+      "Blueprints",
+      "Gameplay systems",
+      "Puzzle design",
+      "User testing",
+    ],
+
+    links: [
+      {
+        label: "GitHub",
+        href: "https://github.com/Vladut-Andrei-Lambru/TimeRewindUE5",
+      },
+      {
+        label: "Test plan and evaluation",
+        href: "/files/time-rewind-test-plan.pdf",
+      },
+    ],
+
+    documentation: {
+      report: "/files/time-rewind-test-plan.pdf",
+      summary:
+        "The test plan documents 25 technical and gameplay test cases, initial failures, fixes, retest results and observations from three playtesters. It covers rewind behaviour, cube interactions, mode filtering, doors, platforms, laser puzzles, UI, audio and remaining limitations.",
+      diagrams: [],
+    },
+
+    systems: [
+      {
+        title: "Reusable recording and reverse playback",
+        description:
+          "URewindComponentCPP records snapshots containing an actor's transform, linear velocity, angular velocity and physics simulation state. Each component maintains a bounded history. During rewind, normal character movement or physics simulation is disabled and snapshots are applied from newest to oldest.",
+        details: [
+          "Shared FRewindFrame structure for recorded actor state",
+          "Configurable recording interval and history capacity",
+          "Consumed snapshots removed during playback",
+          "Playback stops when the stored history is exhausted",
+        ],
+      },
+      {
+        title: "Rewind modes and progression",
+        description:
+          "The player holds R to rewind and presses Q to change the target mode. Actor tags filter which objects respond to All, Player, Cube or Platforms mode. Platforms mode becomes available after the first door opens, introducing environmental rewind when the level first requires it.",
+        details: [
+          "Actor-tag filtering for selected rewind targets",
+          "Platforms mode unlocked through level progression",
+          "HUD text identifies the selected mode",
+          "History bar reads the selected rewind mode",
+        ],
+      },
+      {
+        title: "Cube pickup, throwing and history management",
+        description:
+          "The cube connects the level's puzzles. While held, it is hidden and its physics, gravity and collision are disabled. Throwing restores its physical behaviour and sends it in the camera direction. Testing exposed conflicts between pickup and rewind, so I added a pickup cooldown after throwing, prevented collection during rewind and cleared old history on a new throw.",
+        details: [
+          "Physics and collision disabled while the cube is held",
+          "Camera-directed throw",
+          "Short cooldown prevents immediate recollection",
+          "Pickup checks whether the cube is rewinding",
+          "New throws clear history from earlier interactions",
+        ],
+      },
+      {
+        title: "Doors and platform traversal",
+        description:
+          "A cube-operated button opens a linked double door using Timeline-driven movement. The next section introduces falling platforms that the player must rewind into position to cross. I adjusted platform rewind settings and added a world-space hint after testers missed the newly unlocked mode.",
+        details: [
+          "Button validates the cube through its actor tag",
+          "Timeline and interpolation control sliding-door movement",
+          "Button and door sounds confirm activation",
+          "Platform actors use the shared rewind component",
+          "World-space instructions explain the mode change",
+        ],
+      },
+      {
+        title: "Laser puzzles built around the cube's path",
+        description:
+          "Pressure plates control the visibility and collision of linked laser barriers. The final puzzle requires the player to use the cube's recorded route: after passing one barrier, rewinding the cube moves it onto another plate. I adjusted plate placement around the actual recorded path so the solution could be achieved consistently.",
+        details: [
+          "Active laser collision blocks the player",
+          "Pressure plates enable and disable linked barriers",
+          "Laser visuals and collision change together",
+          "The cube's recorded route forms part of the solution",
+          "A room hint explains why the previous path matters",
+        ],
+      },
+      {
+        title: "Blueprint presentation and feedback",
+        description:
+          "The C++ component exposes playback controls and start/stop events to Blueprints. Blueprint logic handles puzzle responses, UI, sounds and visual effects. This lets the core recording component remain reusable while each interaction supplies its own feedback.",
+        details: [
+          "Blueprint-callable start, stop and history-clearing functions",
+          "Blueprint events for rewind transitions",
+          "Niagara trail indicates active rewind",
+          "Mode text, history bar and world-space puzzle hints",
+          "Reference validation before door and laser calls",
+        ],
+      },
+      {
+        title: "Technical testing and player feedback",
+        description:
+          "I documented 25 test cases covering the mechanic and its use throughout the level. Tests included physics restoration, empty history, rapid input, cube pickup, mode filtering, puzzle completion and missing references. Three testers also played without being given the full solution. Their confusion around Platforms mode and the final laser room led to additional hints and stronger feedback.",
+        details: [
+          "Initial failures and retest results recorded",
+          "Full level flow tested from start to finish",
+          "Three observed playtesters",
+          "Two testers needed extra guidance before the hint changes",
+          "Empty-history feedback and rapid-input UI flicker remain areas to improve",
+        ],
+      },
+    ],
+
+    challenge: {
+      problem:
+        "The recording system worked in isolation, but the first version did not give players enough reasons to use it. Once puzzles were added, cube pickup could interrupt rewind, old history could send the cube to an earlier position, and testers did not always understand when to change modes.",
+      decision:
+        "I made the cube's recorded path part of the puzzle solution, added environmental rewind through the platform section and tested the complete level flow. Pickup cooldowns, rewind-state checks and history clearing addressed interaction conflicts. World-space hints, mode-aware UI and audio made the intended actions clearer.",
+      result:
+        "The prototype became a connected puzzle course where rewind is needed to recover objects, restore a route and control laser barriers. The test plan records the fixes and successful retests, while retaining the remaining limitations around empty-history feedback, rapid-input UI behaviour and player guidance.",
+    },
+
+    outcome:
+      "The finished prototype connects cube throwing, a sliding door, falling platforms and laser barriers into a playable course. The test plan documents 25 cases and three playtesters, including changes made after failures and confusing moments. The final laser puzzle uses the cube's previous movement as part of its solution, giving the recording system a direct role in gameplay.",
+
+    learning:
+      "The biggest lesson was that a working technical feature still needs a clear gameplay purpose. Building the level exposed problems that an isolated rewind test did not reveal, especially pickup timing, old cube history and unclear mode unlocks. Separating the C++ recording component from Blueprint puzzle logic made iteration easier, while observing players helped me identify where the mechanic needed explanation and feedback.",
+
+    furtherWork:
+      "I would first improve feedback when no rewind history is available and reduce UI flicker during rapid mode changes. For a larger level, I would investigate recording only moving actors, compressing snapshot data and using an adaptive recording rate. I would retain the recorded-path behaviour that the cube puzzles rely on and test any optimisation against those solutions.",
   },
 ];
 
